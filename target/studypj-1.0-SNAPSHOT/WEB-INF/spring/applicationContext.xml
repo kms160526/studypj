@@ -32,7 +32,8 @@
 
     <mybatis-spring:scan base-package="org.studypj.mapper"/>
 
-<!--    <context:component-scan base-package="org.zerock.service, org.zerock.config, org.zerock.task"/>-->
+    <context:component-scan base-package="org.studypj.service"/>
+    <!-- org.zerock.config, org.zerock.task -->
 
     <task:annotation-driven />
 </beans>
