@@ -1,3 +1,8 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+
 #header{
     width: 100%;
     height: 80px;
@@ -12,9 +17,11 @@
 
 #container{
     width: 100%;
-    /*height: 600px;*/
+    flex-grow: 1;
     display: flex;
     min-width: 680px;
+    min-height: 600px;
+
 }
 
 #container .nav{
@@ -56,10 +63,69 @@
 #container #content{
     /* 나머지 영역을 전부 채움 */
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: antiquewhite;
 }
 
 #footer{
     width: 100%;
     height: 150px;
     min-width: 680px;
+}
+
+/* 목록화면에 관련 css */
+#content .home{
+    height: 30px;
+    padding: 20px;
+}
+
+.table tr{
+    padding-top: 15px;
+    height: 25px;
+}
+
+/* 페이지 번호 관련 css */
+.pagination-wrap{
+    padding-top: 20px;
+}
+
+.pagination {
+    list-style: none;
+}
+
+.pagination li {
+    float: left;
+    margin-rigin: 20px;
+    width: 20px;
+    padding: 10px;
+}
+
+.pagination li a{
+    width: 20px;
+}
+
+/* 버튼 관련 css */
+.button-wrap{
+    height: 30px;
+    padding-top: 20px;
+}
+
+/* 버튼색 일단 보류 ...... */
+/*.btn-default{
+    background-color: yellow;
+}
+
+.btn-danger{
+    background-color: palegreen;
+}*/
+
+.reg-btn-wrap{
+    width:400px;
+}
+
+.reg-btn-div{
+    float: right;
+    width: 10%;
 }

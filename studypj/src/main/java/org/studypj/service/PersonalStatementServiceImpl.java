@@ -20,11 +20,13 @@ public class PersonalStatementServiceImpl implements PersonalStatementService{
     private PersonalStatementMapper personalStatementMapper;
 
     @Override
-    public void register(PersonalStatementVO personalStatement) {
+    public boolean register(PersonalStatementVO personalStatement) {
 
         log.info("personalStatement register..........");
 
-        personalStatementMapper.insert(personalStatement);
+        boolean registerResult = personalStatementMapper.insert(personalStatement) == 1;
+
+        return registerResult;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class PersonalStatementServiceImpl implements PersonalStatementService{
     @Override
     public boolean modify(PersonalStatementVO personalStatement) {
 
-        log.info("personalStatement register..........");
+        log.info("personalStatement modify..........");
 
         boolean modifyResult = personalStatementMapper.update(personalStatement) == 1;
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PersonalStatementService {
 
-    public void register(PersonalStatementVO personalStatement);
+    public boolean register(PersonalStatementVO personalStatement);
 
     public boolean remove(int personal_statement_no);
 

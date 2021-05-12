@@ -11,7 +11,7 @@
     <title>Interview Home</title>
 
     <!-- Reset CSS -->
-<%--    <link href="/resources/css/reset.css" rel="stylesheet">--%>
+    <link href="/resources/css/reset.css" rel="stylesheet">
 
     <!-- template CSS -->
     <link href="/resources/css/template.css" rel="stylesheet">

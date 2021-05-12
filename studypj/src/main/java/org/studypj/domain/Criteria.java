@@ -21,4 +21,13 @@ public class Criteria {
         this.startRownum = (pageNum-1) * amount;
     }
 
+    // redirect 처리를 위한 메서드
+    public String getListLink(){
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
+                .queryParam("pageNum", this.pageNum)
+                .queryParam("amount", this.getAmount());
+
+        return builder.toUriString();
+
+    }
 }

@@ -15,7 +15,7 @@
 <div id="content">
     <div class="home">
         <span>
-            getPS
+            자기소개서
         </span>
     </div>
 
@@ -57,11 +57,28 @@
                         value="${personalStatement.job_espirations}"/></textarea>
             </div>
             <div class="form-row">
-                등록일자
+                <div>
+                    등록일자
+                </div>
                 <input type="text" name='regdate'
                        value="<fmt:formatDate pattern="yyyy-MM-dd" value="${personalStatement.regdate}" />"
                        readonly="readonly">
             </div>
+
+
+            <div class="button-wrap">
+                <button data-oper='modify' class="btn btn-default" >Modify</button>
+
+                <button data-oper='list' class="btn btn-info" >List</button>
+
+                <form id='operForm' action="/resume/modifyPersonalStatement" method="get">
+                    <input type='hidden' id='personal_statement_no' name='personal_statement_no' value='<c:out value="${personalStatement.personal_statement_no}"/>'>
+                    <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
+                    <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
+                </form>
+                <!-- end button-wrap -->
+            </div>
+
         <!-- end form-wrap -->
         </div>
 
@@ -71,6 +88,30 @@
 
 
 <%@include file="../includes/footer.jsp" %>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        var operForm = $("#operForm");
+
+        // mddify 버튼 클릭시 operForm을 submit()
+        $("button[data-oper='modify']").on("click", function(){
+
+            operForm.submit();
+        });
+
+        // list 버튼 클릭시 이동 operForm을 submit(), action 속성 수정
+        $("button[data-oper='list']").on("click", function(){
+
+            // list로 이동할때는 personal_statement_no 삭제
+            operForm.find("#personal_statement_no").remove();
+            operForm.attr("action", "/resume/personalStatementList");
+            operForm.submit();
+        });
+
+    });
+
+</script>
 
 </body>
 </html>

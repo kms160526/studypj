@@ -12,6 +12,7 @@ public class PersonalStatementVO {
     private String pros_and_cons;
     private String experiance;
     private String job_espirations;
+
     private Date regdate;
 
 }
