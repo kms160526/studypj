@@ -129,3 +129,14 @@ body{
     float: right;
     width: 10%;
 }
+
+/* form-wrap 관련 설정 아래쪽 margin 추가 */
+.form-wrap {
+    margin-bottom: 50px;
+    border: black 1px solid;
+    padding: 10px;
+}
+
+.form-row{
+    margin-bottom: 20px;
+}

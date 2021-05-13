@@ -22,43 +22,39 @@
     <div class="table-wrap">
         <div class="form-wrap">
             <form action="/resume/modifyPersonalStatement" method="post">
-                <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
-                <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
+                <input type='hidden' name='pageNum' value='${cri.pageNum}'>
+                <input type='hidden' name='amount' value='${cri.amount}'>
 
                 <div class="form-row">
                     <div>
                         자기소개서 번호
                     </div>
                     <input type="text" name='personal_statement_no'
-                           value="<c:out value="${personalStatement.personal_statement_no}" />" readonly="readonly">
+                           value="${personalStatement.personal_statement_no}" readonly="readonly">
                 </div>
                 <div class="form-row">
                     <div>
                         가정환경
                     </div>
-                    <textarea rows="5" cols="50" name='home_environment'><c:out
-                            value="${personalStatement.home_environment}"/></textarea>
+                    <textarea rows="5" cols="50" name='home_environment'>${personalStatement.home_environment}</textarea>
                 </div>
                 <div class="form-row">
                     <div>
                         본인장단점
                     </div>
-                    <textarea rows="5" cols="50" name='pros_and_cons'><c:out
-                            value="${personalStatement.pros_and_cons}"/></textarea>
+                    <textarea rows="5" cols="50" name='pros_and_cons'>${personalStatement.pros_and_cons}</textarea>
                 </div>
                 <div class="form-row">
                     <div>
                         본인경험
                     </div>
-                    <textarea rows="5" cols="50" name='experiance' ><c:out
-                            value="${personalStatement.experiance}"/></textarea>
+                    <textarea rows="5" cols="50" name='experiance' >${personalStatement.experiance}</textarea>
                 </div>
                 <div class="form-row">
                     <div>
                         입사포부
                     </div>
-                    <textarea rows="5" cols="50" name='job_espirations' ><c:out
-                            value="${personalStatement.job_espirations}"/></textarea>
+                    <textarea rows="5" cols="50" name='job_espirations' >${personalStatement.job_espirations}</textarea>
                 </div>
                 <div class="form-row">
                     <div>
@@ -107,7 +103,12 @@
 
             if(operation === 'remove'){
                 // POST - /resume/removePersonalStatement 으로 변경
-                formObj.attr("action", "/resume/removePersonalStatement");
+                // 삭제하기전에 체크
+                if(confirm("정말 삭제하시겠습니까?")){
+                    formObj.attr("action", "/resume/removePersonalStatement");
+                }else{
+                    return;
+                }
 
             }else if(operation === 'list'){
                 // list로 이동 이동할때 method는 get으로 personalStatement의 정보는 지우고 페이징 관련 정보만 가지고 가야함

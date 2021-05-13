@@ -37,7 +37,7 @@
             </thead>
             <c:forEach items="${list}" var="personalStatement">
                 <tr>
-                    <td><a class='move' href='<c:out value="${personalStatement.personal_statement_no}"/>'><c:out value="${personalStatement.personal_statement_no}"/></a></td>
+                    <td><a class='move' href='${personalStatement.personal_statement_no}'>${personalStatement.personal_statement_no}</a></td>
                     <td><fmt:formatDate pattern="yyyy-MM-dd" value="${personalStatement.regdate}" /></td>
                 </tr>
             </c:forEach>
@@ -46,6 +46,7 @@
         <div class='pagination-wrap'>
             <ul class="pagination">
 
+                <!-- pageMaker.prev가 있으면 Prev를 만들고 없으면 만들지 않는다. -->
                 <c:if test="${pageMaker.prev}">
                     <li class="paginate_button previous">
                         <a href="${pageMaker.startPage -1}">Prev</a>
@@ -84,7 +85,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         // result 를 체크해서 modify, remove 결과를 확인
-        var result = '<c:out value="${result}"/>';
+        var result = '${result}';
 
         if(result === 'success'){
             alert("작업이 성공했습니다. ");

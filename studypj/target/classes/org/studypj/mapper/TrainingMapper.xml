@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.studypj.mapper.TrainingMapper">
+
+<!--    private int training_group_no;-->
+<!--    private int training_no;-->
+<!--    private String training_term;-->
+<!--    private String training_name;-->
+<!--    private int training_completion;-->
+
+<!--    private Date regdate;-->
+
+<!--    insert into TRAINING (TRAINING_NO, TRAINING_TERM, TRAINING_NAME ,TRAINING_COMPLETION)-->
+<!--    values (144, '20082101', 'DCSW', 1);-->
+<!--    select * from TRAINING;-->
+
+    <insert id="insert">
+        insert into TRAINING (TRAINING_NO, TRAINING_TERM, TRAINING_NAME, TRAINING_COMPLETION)
+        values (#{training_no}, #{training_term}, #{training_name}, #{training_completion})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from TRAINING
+        where training_group_no = #{training_group_no}
+    </delete>
+
+    <update id="update">
+        update TRAINING
+        set TRAINING_NO = #{training_no},
+            TRAINING_TERM    = #{training_term},
+            TRAINING_NAME       = #{training_name},
+            TRAINING_COMPLETION  = #{training_completion}
+        where training_group_no = #{training_group_no}
+    </update>
+
+    <select id="read" resultType="org.studypj.domain.TrainingVO">
+        select * from TRAINING where training_group_no = #{training_group_no}
+    </select>
+
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.studypj.mapper.PersonalMapper">
+
+    <insert id="insert">
+        insert into PERSONAL (name_ko, NAME_EN, NAME_CN, BIRTH, ADDRESS, CONTACT, PHONE, EMAIL)
+        values (#{name_ko}, #{name_en}, #{name_cn}, #{birth}, #{address}, #{contact}, #{phone}, #{email})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from PERSONAL
+        where personal_no = #{personal_no}
+    </delete>
+
+    <update id="update">
+        update PERSONAL
+        set name_ko = #{name_ko},
+            NAME_EN    = #{name_en},
+            NAME_CN       = #{name_cn},
+            BIRTH  = #{birth},
+            ADDRESS    = #{address},
+            CONTACT       = #{contact},
+            PHONE  = #{phone},
+            EMAIL    = #{email}
+        where personal_no = #{personal_no}
+    </update>
+
+    <select id="read" resultType="org.studypj.domain.PersonalVO">
+        select * from PERSONAL where personal_no = #{personal_no}
+    </select>
+
+
+</mapper>

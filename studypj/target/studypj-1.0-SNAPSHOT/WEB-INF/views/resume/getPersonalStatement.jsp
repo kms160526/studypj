@@ -26,35 +26,31 @@
                     자기소개서 번호
                 </div>
                 <input type="text" name='personal_statement_no'
-                       value="<c:out value="${personalStatement.personal_statement_no}" />" readonly="readonly">
+                       value="${personalStatement.personal_statement_no}" readonly="readonly">
             </div>
             <div class="form-row">
                 <div>
                     가정환경
                 </div>
-                <textarea rows="5" cols="50" name='home_environment' readonly="readonly"><c:out
-                        value="${personalStatement.home_environment}"/></textarea>
+                <textarea rows="5" cols="50" name='home_environment' readonly="readonly">${personalStatement.home_environment}</textarea>
             </div>
             <div class="form-row">
                 <div>
                     본인장단점
                 </div>
-                <textarea rows="5" cols="50" name='pros_and_cons' readonly="readonly"><c:out
-                        value="${personalStatement.pros_and_cons}"/></textarea>
+                <textarea rows="5" cols="50" name='pros_and_cons' readonly="readonly">${personalStatement.pros_and_cons}</textarea>
             </div>
             <div class="form-row">
                 <div>
                     본인경험
                 </div>
-                <textarea rows="5" cols="50" name='experiance' readonly="readonly"><c:out
-                        value="${personalStatement.experiance}"/></textarea>
+                <textarea rows="5" cols="50" name='experiance' readonly="readonly">${personalStatement.experiance}</textarea>
             </div>
             <div class="form-row">
                 <div>
                     입사포부
                 </div>
-                <textarea rows="5" cols="50" name='job_espirations' readonly="readonly"><c:out
-                        value="${personalStatement.job_espirations}"/></textarea>
+                <textarea rows="5" cols="50" name='job_espirations' readonly="readonly">${personalStatement.job_espirations}</textarea>
             </div>
             <div class="form-row">
                 <div>
@@ -72,9 +68,9 @@
                 <button data-oper='list' class="btn btn-info" >List</button>
 
                 <form id='operForm' action="/resume/modifyPersonalStatement" method="get">
-                    <input type='hidden' id='personal_statement_no' name='personal_statement_no' value='<c:out value="${personalStatement.personal_statement_no}"/>'>
-                    <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
-                    <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
+                    <input type='hidden' id='personal_statement_no' name='personal_statement_no' value='${personalStatement.personal_statement_no}'>
+                    <input type='hidden' name='pageNum' value='${cri.pageNum}'>
+                    <input type='hidden' name='amount' value='${cri.amount}'>
                 </form>
                 <!-- end button-wrap -->
             </div>

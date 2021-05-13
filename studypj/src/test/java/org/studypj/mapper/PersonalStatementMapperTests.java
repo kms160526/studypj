@@ -66,7 +66,10 @@ public class PersonalStatementMapperTests {
     @Test
     public void testDelete(){
         // 4번 personal_statement_no를 삭제
-        int personal_statement_no = 4;
+        // 만약 이미 resume에 등록되어 있는 personal_statement_no를 삭제한다면?
+        // -> 참조키로 연결되어 있기 때문에 삭제할 수 없는 오류가 발생한다.
+
+        int personal_statement_no = 20016;
         int result = 0;
 
         result = mapper.delete(personal_statement_no);
@@ -116,4 +119,6 @@ public class PersonalStatementMapperTests {
         list.forEach( vo -> log.info(vo));
 
     }
+
+
 }

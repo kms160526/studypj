@@ -31,7 +31,7 @@
     <div class="nav">
         <ul>
             <li><a class="menu menu-title" href="#">자기소개</a></li>
-            <li><a href="#">이력서</a></li>
+            <li><a href="/resume/resumeList">이력서</a></li>
             <li><a href="/resume/personalStatementList">자기소개서</a></li>
         </ul>
         <ul>
