@@ -15,7 +15,7 @@ public interface ResumeMapper {
     public int delete(int resume_no);
 
     // update Resume
-//    public int update(ResumeVO vo);
+    public int update(ResumeVO vo);
 
     // read - selectOne
     public ResumeVO read(int resume_no);

@@ -22,4 +22,6 @@ public interface PersonalStatementService {
     //     페이징 처리 관련 getTotal
     public int getTotal();
 
+    // 자소서 목록 그냥 getPersonalStatementList
+    public List<PersonalStatementVO> getListNonParam();
 }

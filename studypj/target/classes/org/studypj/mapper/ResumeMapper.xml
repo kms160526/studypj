@@ -38,14 +38,14 @@
         where RESUME_NO = #{resume_no}
     </delete>
 
-<!--    <update id="update">-->
-<!--        update PERSONAL_STATEMENT-->
-<!--        set HOME_ENVIRONMENT = #{home_environment},-->
-<!--            PROS_AND_CONS    = #{pros_and_cons},-->
-<!--            EXPERIANCE       = #{experiance},-->
-<!--            JOB_ESPIRATIONS  = #{job_espirations}-->
-<!--        where personal_statement_no = #{personal_statement_no}-->
-<!--    </update>-->
+    <update id="update">
+        update RESUME
+        set PERSONAL_STATEMENT_NO = #{personal_statement_no},
+            EDUCATION_GROUP_NO    = #{education_group_no},
+            PERSONAL_NO       = #{personal_no},
+            TRAINING_GROUP_NO  = #{training_group_no}
+        where RESUME_NO = #{resume_no}
+    </update>
 
 
 </mapper>

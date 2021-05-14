@@ -80,12 +80,8 @@ public class ResumeController {
 
         log.info("POST... /modifyPersonalStatement..");
 
-        if(personalStatementService.modify(personalStatement)){
-            // 성공시 result 를 success 로
-            rttr.addFlashAttribute("result", "success");
-        }else{
-            rttr.addFlashAttribute("result", "fail");
-        }
+        // 성공시 result 를 success 로 실패시 fail
+        rttr = resultCheckMethod(personalStatementService.modify(personalStatement), rttr);
 
         // Criteria 의 getListLink() 메서드를 활용하여 자동으로 추가된 url 생성
         return "redirect:/resume/personalStatementList" + cri.getListLink();
@@ -101,12 +97,7 @@ public class ResumeController {
 
         log.info("POST...... /removePersonalStatement ");
 
-        if(personalStatementService.remove(personal_statement_no)){
-            // 성공시 result 를 success 로
-            rttr.addFlashAttribute("result", "success");
-        }else{
-            rttr.addFlashAttribute("result", "fail");
-        }
+        rttr = resultCheckMethod(personalStatementService.remove(personal_statement_no), rttr);
 
         return "redirect:/resume/personalStatementList" + cri.getListLink();
     }
@@ -124,12 +115,7 @@ public class ResumeController {
 
         log.info("POST... /registerPersonalStatement.." + personalStatement );
 
-        if(personalStatementService.register(personalStatement)){
-            // 성공시 result 를 success 로
-            rttr.addFlashAttribute("result", "success");
-        }else{
-            rttr.addFlashAttribute("result", "fail");
-        }
+        rttr = resultCheckMethod(personalStatementService.register(personalStatement), rttr);
 
         // register는 처리 후 첫 페이지의 화면을 보여주면 좋을것같다.
         return "redirect:/resume/personalStatementList";
@@ -188,7 +174,6 @@ public class ResumeController {
         log.info("/getResume -> personal : " + personal);
         model.addAttribute("personal", personal);
 
-
         // 교육 정보 얻어오기 -> 최종 대학정보만 가져온다. -> 편입과정이 있을 수 있고... 대학원 과정이 있을 수 있다.
         // List<EducationVO> 타입일 것이다... -> 후에 수정
         // resume 의 personal_no 를 참고하여 education 값들을 가져온다.
@@ -207,18 +192,36 @@ public class ResumeController {
         PersonalStatementVO personalStatement = personalStatementService.get(resume.getPersonal_statement_no());
         log.info("/getResume -> personalStatement : " + personalStatement);
         model.addAttribute("personalStatement", personalStatement);
+
+        // 수정 페이지일 경우 personalStatement의 목록들을 가져와야한다.
+        List<PersonalStatementVO> personalStatementList = personalStatementService.getListNonParam();
+        model.addAttribute("personalStatementList", personalStatementList);
     }
 
     // POST - modify resume -> redirect 처리
     @PostMapping("/modifyResume")
-    public String modifyResume(ResumeVO resume,
+    public String modifyResume(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement,
+                               EducationVO education, TrainingVO training,
                                @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr){
-        // modify resume
+
+        // 값 불러오는지 테스트
+        log.info("POST -- /modifyResume");
+        log.info("ResumeVO -> " + resume);
+        log.info("PersonalVO -> " + personal);
+        log.info("PersonalStatementVO -> " + personalStatement);
+        log.info("EducationVO -> " + education);
+        log.info("TrainingVO -> " + training);
+
         // 파일의 변경이 있을경우의 처리 ( 사진 )
-        // 개인싱상정보의 수정
-        // 학력사항의 수정
-        // 교육사항의 수정
-        // 선택된 자기소개서의 수정
+
+        // TODO: 유효성 체크를 하고 modify를 시도해야한다.
+        // 개인싱상정보의 유효성체크
+        // 학력사항의 유효성체크
+        // 교육사항의 유효성체크
+
+        // 선택된 자기소개서의 수정 -> 따로 처리 ..
+        // 전체 resume 수정 처리 ?
+        rttr = resultCheckMethod(resumeService.modify(resume, personal, education, training), rttr);
 
         // Criteria 의 getListLink() 메서드를 활용하여 자동으로 추가된 url 생성
         return "redirect:/resume/resumeList" + cri.getListLink();
@@ -230,5 +233,17 @@ public class ResumeController {
 
     // POST - register resume
 
+
+    // 처리결과가 성공이면 succecc, 실패면 fail
+    // RedirectAttributes rttr 파라미터로 받아옴
+    public RedirectAttributes resultCheckMethod(boolean result , RedirectAttributes rttr){
+        if(result){
+            rttr.addFlashAttribute("result", "success");
+        }else{
+            rttr.addFlashAttribute("result", "fail");
+        }
+
+        return rttr;
+    }
 
 }

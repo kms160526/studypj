@@ -21,11 +21,13 @@
 
     <div class="table-wrap">
         <!-- 실제 action을 담당하는 form -->
-        <form id="action-form" name="action-form" method="post">
-            <input type='hidden' id='resume_no' name='resume_no' value='${resume.resume_no}'>
-            <input type='hidden' name='pageNum' value='${cri.pageNum}'>
-            <input type='hidden' name='amount' value='${cri.amount}'>
-        </form>
+        <div id="action-from-wrap">
+            <form id="action-form" name="action-form" method="post" action="/resume/modifyResume">
+                <input type='hidden' id='resume_no' name='resume_no' value='${resume.resume_no}'>
+                <input type='hidden' name='pageNum' value='${cri.pageNum}'>
+                <input type='hidden' name='amount' value='${cri.amount}'>
+            </form>
+        </div>
 
         <!-- 개인신상 form-wrap -->
         <div class="form-wrap">
@@ -41,50 +43,50 @@
                     <div>
                         이름_한글
                     </div>
-                    <textarea rows="5" cols="50" name='home_environment' readonly="readonly">${personal.name_ko}</textarea>
+                    <input type="text" name='name_ko' value='${personal.name_ko}'>
                 </div>
                 <div class="form-row">
                     <div>
                         이름_영문
                     </div>
-                    <textarea rows="5" cols="50" name='name_en' readonly="readonly">${personal.name_en}</textarea>
+                    <input type="text" name='name_en' value='${personal.name_en}'>
                 </div>
                 <div class="form-row">
                     <div>
                         이름_한자
                     </div>
-                    <textarea rows="5" cols="50" name='name_cn' readonly="readonly">${personal.name_cn}</textarea>
+                    <input type="text" name='name_cn' value='${personal.name_cn}'>
                 </div>
                 <div class="form-row">
                     <div>
                         생년월일
                     </div>
-                    <textarea rows="5" cols="50" name='birth' readonly="readonly">${personal.birth}</textarea>
+                    <input type="text" name='birth' value='${personal.birth}'>
                 </div>
                 <div class="form-row">
                     <div>
                         주소
                     </div>
-                    <textarea rows="5" cols="50" name='address' readonly="readonly">${personal.address}</textarea>
+                    <input type="text" cols="50" name='address' value='${personal.address}'>
                 </div>
 
                 <div class="form-row">
                     <div>
                         연락처
                     </div>
-                    <textarea rows="5" cols="50" name='contact' readonly="readonly">${personal.contact}</textarea>
+                    <input type="text" name='contact' value='${personal.contact}'>
                 </div>
                 <div class="form-row">
                     <div>
                         핸드폰
                     </div>
-                    <textarea rows="5" cols="50" name='phone' readonly="readonly">${personal.phone}</textarea>
+                    <input type="text" name='phone' value='${personal.phone}'>
                 </div>
                 <div class="form-row">
                     <div>
                         이메일
                     </div>
-                    <textarea rows="5" cols="50" name='email' readonly="readonly">${personal.email}</textarea>
+                    <input type="text" name='email' value='${personal.email}'>
                 </div>
                 <div class="form-row">
                     <div>
@@ -113,25 +115,25 @@
                     <div>
                         학력사항_번호
                     </div>
-                    <textarea rows="5" cols="50" name='education_no' readonly="readonly">${education.education_no}</textarea>
+                    <input type="text" name='education_no' value='${education.education_no}'>
                 </div>
                 <div class="form-row">
                     <div>
                         학력기간
                     </div>
-                    <textarea rows="5" cols="50" name='education_term' readonly="readonly">${education.education_term}</textarea>
+                    <input type="text" name='education_term' value='${education.education_term}'>
                 </div>
                 <div class="form-row">
                     <div>
                         학교명
                     </div>
-                    <textarea rows="5" cols="50" name='school_name' readonly="readonly">${education.school_name}</textarea>
+                    <input type="text" name='school_name' value='${education.school_name}'>
                 </div>
                 <div class="form-row">
                     <div>
-                        졸업여부
+                        졸업여부 -> 1 졸업, 2 수료, 3 재학
                     </div>
-                    <textarea rows="5" cols="50" name='grated' readonly="readonly">${education.grated}</textarea>
+                    <input type="text" name='grated' value='${education.grated}'>
                 </div>
                 <div class="form-row">
                     <div>
@@ -160,25 +162,25 @@
                     <div>
                         교육연수_번호
                     </div>
-                    <textarea rows="5" cols="50" name='home_environment' readonly="readonly">${training.training_no}</textarea>
+                    <input type="text" name='home_environment' value='${training.training_no}'>
                 </div>
                 <div class="form-row">
                     <div>
                         교육연수_기간
                     </div>
-                    <textarea rows="5" cols="50" name='training_term' readonly="readonly">${training.training_term}</textarea>
+                    <input type="text" name='training_term' value='${training.training_term}'>
                 </div>
                 <div class="form-row">
                     <div>
                         교육연수명
                     </div>
-                    <textarea rows="5" cols="50" name='training_name' readonly="readonly">${training.training_name}</textarea>
+                    <input type="text" name='training_name' value='${training.training_name}'>
                 </div>
                 <div class="form-row">
                     <div>
-                        수료여부
+                        수료여부 -> radio 형태로
                     </div>
-                    <textarea rows="5" cols="50" name='training_completion' readonly="readonly">${training.training_completion}</textarea>
+                    <input type="text" name='training_completion' value='${training.training_completion}'>
                 </div>
                 <div class="form-row">
                     <div>
@@ -198,12 +200,14 @@
             <form name="persnalStatement-form">
                 <div class="form-row">
                     <div>
+                        <!-- 클릭하면 팝업창으로 수정하는 방법도 좋은것 같다. -->
                         자기소개서 선택
                     </div>
+                    <!-- forEach를 사용해서 자소서 목록들을 options에 추가한다. -> 성능상의 이유로 잘 사용하지 않음-->
                     <select id="personalStatement-list" name="personalStatement-list">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
+                        <c:forEach items="${personalStatementList}" var="personalStatement" varStatus="s">
+                            <option value="${personalStatement.personal_statement_no}">${personalStatement.personal_statement_no}</option>
+                        </c:forEach>
                     </select>
                 </div>
                 <div class="form-row">
@@ -267,6 +271,8 @@
 
 </div>
 
+<button id="test-btn" name="test-btn">test</button>
+
 
 
 <%@include file="../includes/footer.jsp" %>
@@ -275,7 +281,15 @@
 
         var formObj = $("form[name='action-form']");
 
+        // 테스트
+        // $("#test-btn").on("click" , function(e){
+        //
+        //     fnModifyResume(formObj);
+        // });
+
         $("button").on("click", function(e){
+            // 버튼 클릭 당시의 값을 가져와야 한다.
+            // jstl로 하지말고 다르게
 
             // 기존 submit 이벤트를 멈춘다.
             e.preventDefault();
@@ -303,19 +317,78 @@
                 formObj.append(amountTag);
 
             }else if(operation === 'modify'){
-                console.log("딱히내용없음 modify.....");
+                // 폼내용들을 전부 가지고 Controller에 넘겨 줘야함
+
+                // form에 실어 보낼 내용들을 formObj에 담는다.
+                fnModifyResume(formObj);
+
             }
 
             formObj.submit();
             // end $("button").on("click", function(e){
         });
 
-
-
-
-
         // end $(document).ready(function(){
     });
+
+    function fnModifyResume(obj){
+        // action-form을 파라미터로 전달받아 업데이트에 필요한 내용들을 전부 담아 전달
+        // 값을 전달하는 부분이 있으므로 테스트를 진행해서 값의 유효성을 체크해야한다.
+
+        // input name에 있는것들 전부 긁어온다.
+        // var pageNumTag = $("input[name='pageNum']").clone(); 와같은 식으로 clone 하고 obj form 에 append 한다.
+        // 신상정보 -> 신상정보_no는 바뀌지 않는다.
+        // + 추가 -> 안보이게 하기위해서 type을 hidden으로 둔다.
+        // + 문제가 생겼을 경우에는 obj.empty() 를 이용해서 초기화시킨다. -> 일반적인 경우는 그냥 post 되므로 상관이 없다.
+
+        // 문제가 있을 때 초기화를 위한 기본 Tag 들
+        var pageNumTag = $("input[name='pageNum']").clone();
+        var amountTag = $("input[name='amount']").clone();
+        var resume_noTag = $("input[name='resume_no']").clone();
+
+        obj.append($("input[name='personal_no']").clone().attr("type", "hidden"));
+        obj.append($("input[name='name_ko']").clone().attr("type", "hidden"));
+        obj.append($("input[name='name_en']").clone().attr("type", "hidden"));
+        obj.append($("input[name='name_cn']").clone().attr("type", "hidden"));
+        obj.append($("input[name='birth']").clone().attr("type", "hidden"));
+        obj.append($("input[name='address']").clone().attr("type", "hidden"));
+        obj.append($("input[name='contact']").clone().attr("type", "hidden"));
+        obj.append($("input[name='phone']").clone().attr("type", "hidden"));
+        obj.append($("input[name='email']").clone().attr("type", "hidden"));
+
+        // 순수 value 값만 가지고 오고 싶으면 이런식으로 하면 된다.
+        // console.log($(testObj).val());
+        obj.append($("input[name='education_group_no']").clone().attr("type", "hidden"));
+        obj.append($("input[name='education_no']").clone().attr("type", "hidden"));
+        obj.append($("input[name='education_term']").clone().attr("type", "hidden"));
+        obj.append($("input[name='school_name']").clone().attr("type", "hidden"));
+        obj.append($("input[name='grated']").clone().attr("type", "hidden"));
+
+
+        // 교육정보 -> 교육정보_no는 바뀌지 않는다.
+        obj.append($("input[name='training_group_no']").clone().attr("type", "hidden"));
+        obj.append($("input[name='training_no']").clone().attr("type", "hidden"));
+        obj.append($("input[name='training_term']").clone().attr("type", "hidden"));
+        obj.append($("input[name='training_name']").clone().attr("type", "hidden"));
+        obj.append($("input[name='training_completion']").clone().attr("type", "hidden"));
+
+        // 자기소개서 번호 -> 자기소개서는 따로 update가 되지않고 resume에 자기소개서 번호만 추가되는식으로 update 된다.
+        // var personal_statement_noTag = $("input[name='personal_statement_no']").clone();
+        obj.append($("input[name='personal_statement_no']").clone().attr("type", "hidden"));
+
+        console.log("----------- formObj 에 있는 html 텍스트 체크 -----------");
+        console.log($(obj).html());
+        console.log("---------------------------------------------------");
+
+    //    -> 유효성 체크하고 싹다 한번에 컨트롤러로 보내서 컨트롤러에서 전부 처리한다.
+    }
+
+    // select box 클릭시 해당하는 번호의 자소서를 불러와서 뿌려주는 기능
+
+    // 한글체크함수
+    // 날짜체크함수
+    // 전화번호체크함수
+    // 이메일체크함수
 
 
 

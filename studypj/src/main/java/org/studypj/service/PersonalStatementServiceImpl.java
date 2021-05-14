@@ -83,4 +83,13 @@ public class PersonalStatementServiceImpl implements PersonalStatementService{
         return personalStatementMapper.getTotalCount();
     }
 
+    // 페이징 처리 없이 전체 목록을 불러옴
+    @Override
+    public List<PersonalStatementVO> getListNonParam() {
+
+        log.info("personalStatement getListNonParam..........");
+
+        return personalStatementMapper.getList();
+    }
+
 }

@@ -11,10 +11,10 @@
     <title>Interview Home</title>
 
     <!-- Reset CSS -->
-    <link href="/resources/css/reset.css" rel="stylesheet">
+    <link href="/resources/css/reset.css" rel="stylesheet" type="text/css">
 
     <!-- template CSS -->
-    <link href="/resources/css/template.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/template.css" rel="stylesheet" type="text/css">
 
 </head>
 
