@@ -92,4 +92,12 @@ public class PersonalStatementServiceImpl implements PersonalStatementService{
         return personalStatementMapper.getList();
     }
 
+    @Override
+    public PersonalStatementVO recentGet() {
+
+        log.info("personalStatement recentGet......");
+
+        return personalStatementMapper.recentRead();
+    }
+
 }

@@ -15,7 +15,7 @@
 <div id="content">
     <div class="home">
         <span>
-            이력서
+            이력서 수정하기
         </span>
     </div>
 

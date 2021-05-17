@@ -16,5 +16,8 @@ public interface TrainingMapper {
     // read - Training
     public TrainingVO read(int training_group_no);
 
+    // recentRead
+    public TrainingVO recentRead();
+
 
 }

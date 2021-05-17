@@ -16,4 +16,7 @@ public interface PersonalMapper {
     // read - selectOne
     public PersonalVO read(int personal_no);
 
+    // recentRead
+    public PersonalVO recentRead();
+
 }

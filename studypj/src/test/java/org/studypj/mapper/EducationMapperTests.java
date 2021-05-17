@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.studypj.domain.EducationVO;
+import org.studypj.domain.PersonalVO;
 
 import java.util.Date;
 
@@ -99,6 +100,14 @@ public class EducationMapperTests {
             log.info("test read Education result vo : " + vo);
         }
 
+    }
+
+    @Test
+    public void testRecentRead(){
+
+        EducationVO vo = mapper.recentRead();
+
+        log.info("Education vo -> " + vo);
     }
 
 }

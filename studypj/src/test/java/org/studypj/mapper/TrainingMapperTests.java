@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.studypj.domain.PersonalVO;
 import org.studypj.domain.TrainingVO;
 
 import java.util.Date;
@@ -87,7 +88,13 @@ public class TrainingMapperTests {
         log.info("test training Read -> " + vo);
     }
 
+    @Test
+    public void testRecentRead(){
 
+        TrainingVO vo = mapper.recentRead();
+
+        log.info("training vo -> " + vo);
+    }
 
 
 

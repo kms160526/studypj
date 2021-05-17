@@ -13,4 +13,6 @@ public interface EducationService {
 
     public EducationVO get(int education_group_no);
 
+    public EducationVO recentGet();
+
 }

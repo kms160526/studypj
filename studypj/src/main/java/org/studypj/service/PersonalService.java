@@ -12,5 +12,6 @@ public interface PersonalService {
 
     public PersonalVO get(int personal_no);
 
+    public PersonalVO recentGet();
 
 }

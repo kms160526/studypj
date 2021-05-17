@@ -46,7 +46,7 @@ public class PersonalStatementMapperTests {
     // 더미 데이터 생성 테스트
     @Test
     public void testInsertMany(){
-        for(int i=1500; i<20000; i++){
+        for(int i=0; i<5000; i++){
             PersonalStatementVO vo = new PersonalStatementVO();
             int result = 0;
 

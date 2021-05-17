@@ -38,4 +38,13 @@
         select * from TRAINING where training_group_no = #{training_group_no}
     </select>
 
+    <!-- 가장 최근의 정보를 읽어옴 -->
+    <select id="recentRead" resultType="org.studypj.domain.TrainingVO">
+        select t.* from TRAINING t
+                            join (
+            select MAX(mx.training_group_no) AS max_training_group_no
+            from TRAINING mx
+        ) m on m.max_training_group_no = t.training_group_no;
+    </select>
+
 </mapper>

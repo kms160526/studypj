@@ -228,10 +228,77 @@ public class ResumeController {
     }
 
     // POST - remove resume
+    @PostMapping("/removeResume")
+    public String removeResume(@RequestParam("resume_no") int resume_no,
+                               @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr){
+
+        log.info("POST...... /removeResume ");
+
+        rttr = resultCheckMethod(resumeService.remove(resume_no), rttr);
+
+        return "redirect:/resume/resumeList" + cri.getListLink();
+    }
 
     // GET - register resume
+    @GetMapping("/registerResume")
+    public void registerResume(Model model){
+
+        log.info("GET....... /registerResume");
+
+        // 기본적으로 register는 기존의 가장 최신 정보를 가져와서 작성하고 새로운 _no 로 insert 한다.
+        // 만약 최근의 데이터가 없다면 ? -> update가 아니라 insert 하는 작업을 실행해야 한다.
+
+        // 가장 최신의 정보를 가져온다.
+        PersonalVO personal = personalService.recentGet();
+        EducationVO education = educationService.recentGet();
+        TrainingVO training = trainingService.recentGet();
+
+        // 신상정보
+        if(personal != null){
+            model.addAttribute("personal", personal);
+        }else{
+            personal = new PersonalVO();
+            model.addAttribute("personal", personal);
+        }
+
+        // education
+        if(education != null){
+            model.addAttribute("education", education);
+        }else{
+            education = new EducationVO();
+            model.addAttribute("education", education);
+        }
+
+        // training
+        if(training != null){
+            model.addAttribute("training", training);
+        }else{
+            training = new TrainingVO();
+            model.addAttribute("training", training);
+        }
+
+    }
 
     // POST - register resume
+    @PostMapping("/registerResume")
+    public String registerResume(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement,
+                                 EducationVO education, TrainingVO training, RedirectAttributes rttr){
+
+        log.info("POST... /registerResume.." + resume );
+
+        // 사진 관련 처리
+
+        // TODO: 유효성 체크를 하고 register를 시도해야한다.
+        // 개인싱상정보의 유효성체크
+        // 학력사항의 유효성체크
+        // 교육사항의 유효성체크
+
+        // 이력서 등록
+        rttr = resultCheckMethod(resumeService.register(resume, personal, personalStatement, education, training), rttr);
+
+        // register는 처리 후 첫 페이지의 화면을 보여주면 좋을것같다.
+        return "redirect:/resume/resumeList";
+    }
 
 
     // 처리결과가 성공이면 succecc, 실패면 fail

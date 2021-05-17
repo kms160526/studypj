@@ -52,4 +52,12 @@ public class TrainingServiceImpl implements TrainingService{
 
         return trainingMapper.read(training_group_no);
     }
+
+    @Override
+    public TrainingVO recentGet() {
+
+        log.info("training recentGet.......... ");
+
+        return trainingMapper.recentRead();
+    }
 }

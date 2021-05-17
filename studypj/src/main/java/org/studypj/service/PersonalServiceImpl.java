@@ -53,4 +53,12 @@ public class PersonalServiceImpl implements PersonalService{
 
         return personalMapper.read(personal_no);
     }
+
+    @Override
+    public PersonalVO recentGet() {
+
+        log.info("personal recentGet............");
+
+        return personalMapper.recentRead();
+    }
 }

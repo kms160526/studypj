@@ -2,6 +2,7 @@ package org.studypj.mapper;
 
 import org.studypj.domain.Criteria;
 import org.studypj.domain.PersonalStatementVO;
+import org.studypj.domain.PersonalVO;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public interface PersonalStatementMapper {
 
     // read - selectOne
     public PersonalStatementVO read(int personal_statement_no);
+
+    // recentRead
+    public PersonalStatementVO recentRead();
 
     // 페이징 처리 관련
     // total

@@ -51,4 +51,12 @@ public class EducationServiceImpl implements EducationService{
 
         return educationMapper.read(education_group_no);
     }
+
+    @Override
+    public EducationVO recentGet() {
+
+        log.info("Education recentGet............");
+
+        return educationMapper.recentRead();
+    }
 }

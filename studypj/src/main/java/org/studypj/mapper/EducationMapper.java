@@ -16,5 +16,8 @@ public interface EducationMapper {
     // read - Education
     public EducationVO read(int education_group_no);
 
+    // recentRead
+    public EducationVO recentRead();
+
 
 }

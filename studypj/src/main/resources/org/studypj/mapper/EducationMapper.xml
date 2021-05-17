@@ -38,4 +38,13 @@
         select * from EDUCATION where education_group_no = #{education_group_no}
     </select>
 
+    <!-- 가장 최근의 정보를 읽어옴 -->
+    <select id="recentRead" resultType="org.studypj.domain.EducationVO">
+        select e.* from EDUCATION e
+                            join (
+            select MAX(mx.education_group_no) AS max_education_group_no
+            from EDUCATION mx
+        ) m on m.max_education_group_no = e.education_group_no;
+    </select>
+
 </mapper>

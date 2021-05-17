@@ -46,5 +46,14 @@
         select * from PERSONAL_STATEMENT where personal_statement_no = #{personal_statement_no}
     </select>
 
+    <!-- 가장 최근의 정보를 읽어옴 -->
+    <select id="recentRead" resultType="org.studypj.domain.PersonalStatementVO">
+        select p.* from PERSONAL_STATEMENT p
+                            join (
+            select MAX(mx.personal_statement_no) AS max_personal_statement_no
+            from PERSONAL_STATEMENT mx
+        ) m on m.max_personal_statement_no = p.personal_statement_no;
+    </select>
+
 
 </mapper>

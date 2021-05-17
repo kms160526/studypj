@@ -23,7 +23,7 @@
         </span>
         <div class="reg-btn-wrap">
             <div class="reg-btn-div">
-                <button id="reg-btn" onclick="location.href='/resume/registerPersonalStatement'">register</button>
+                <button id="reg-btn" onclick="location.href='/resume/registerResume'">register</button>
             </div>
         </div>
     </div>

@@ -9,6 +9,10 @@ public interface ResumeService {
 
     public boolean register(ResumeVO resume);
 
+    // 실제 이력서 등록 서비스
+    public boolean register(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement,
+                            EducationVO education, TrainingVO training);
+
     public boolean remove(int resume_no);
 
     // resume를 update 한다. 추가로 개인신상, 학력, 교육연수의 항목들도 같이 update 된다.

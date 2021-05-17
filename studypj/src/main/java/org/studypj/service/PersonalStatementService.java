@@ -24,4 +24,7 @@ public interface PersonalStatementService {
 
     // 자소서 목록 그냥 getPersonalStatementList
     public List<PersonalStatementVO> getListNonParam();
+
+    // recentGet - recentRead
+    public PersonalStatementVO recentGet();
 }

@@ -82,7 +82,14 @@ public class PersonalMapperTests {
         PersonalVO vo = mapper.read(targetNo);
 
         log.info( "personal vo -> " + vo);
+    }
 
+    @Test
+    public void testRecentRead(){
+
+        PersonalVO vo = mapper.recentRead();
+
+        log.info("personal vo -> " + vo);
     }
 
 

@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.studypj.domain.*;
-import org.studypj.mapper.EducationMapper;
-import org.studypj.mapper.PersonalMapper;
-import org.studypj.mapper.ResumeMapper;
-import org.studypj.mapper.TrainingMapper;
+import org.studypj.mapper.*;
 
 import java.util.List;
 
@@ -29,6 +26,9 @@ public class ResumeServiceImpl implements ResumeService{
     @Setter(onMethod_ = @Autowired)
     private TrainingMapper trainingMapper;
 
+    @Setter(onMethod_ = @Autowired)
+    private PersonalStatementMapper personalStatementMapper;
+
 
     @Override
     public boolean register(ResumeVO resume) {
@@ -36,6 +36,44 @@ public class ResumeServiceImpl implements ResumeService{
         log.info("resume register...........service");
 
         boolean registerResult = resumeMapper.insert(resume) == 1;
+
+        return registerResult;
+    }
+
+    // 실제 데이터가 들어있는 이력서 등록 메서드
+    @Transactional
+    @Override
+    public boolean register(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement, EducationVO education, TrainingVO training) {
+
+        log.info("resume register...........service");
+
+        // 문제가 생겼을 경우 어디서 문제가 생겼는지 알기위해서 하나씩 체크한다.
+        boolean registerResult = false;
+        boolean registerSubResult = false;
+        boolean registerResumeResult = false;
+
+        // 신상정보, 자기소개서, 학력, 교육 정보 insert
+        registerSubResult =  subRegister(personal, personalStatement, education, training);
+        log.info("register Resume subRegister Result -> " + registerSubResult);
+
+        // 최신정보 읽어오기
+        personal = personalMapper.recentRead();
+        education = educationMapper.recentRead();
+        training = trainingMapper.recentRead();
+        personalStatement = personalStatementMapper.recentRead();
+
+        resume.setPersonal_no(personal.getPersonal_no());
+        resume.setEducation_group_no(education.getEducation_group_no());
+        resume.setTraining_group_no(training.getTraining_group_no());
+        resume.setPersonal_statement_no(personalStatement.getPersonal_statement_no());
+        log.info("register Resume 입력받은 resume의 정보 : " + resume);
+
+        registerResumeResult = resumeMapper.insert(resume) == 1;
+        log.info("registerResumeResult Result -> " + registerResumeResult);
+
+        // 전부 정상적으로 처리되었다면 registerResult는 true;
+        registerResult = registerResumeResult && registerResumeResult && registerSubResult;
+        log.info("register resume Result -> " + registerResult);
 
         return registerResult;
     }
@@ -113,4 +151,47 @@ public class ResumeServiceImpl implements ResumeService{
 
         return resumeMapper.getTotalCount();
     }
+
+    // 이력서 등록을 위한 personal, personalStatement, education, training 등록 메서드, 트랜잭션 처리
+    @Transactional
+    public boolean subRegister(PersonalVO personal, PersonalStatementVO personalStatement, EducationVO education, TrainingVO training){
+        // 문제가 생겼을 경우 어디서 문제가 생겼는지 알기위해서 하나씩 체크한다.
+        boolean registerResult = false;
+        boolean registerPersonalResult = false;
+        boolean registerEducationResult = false;
+        boolean registerTrainingResult = false;
+        boolean registerPersonalStatementResult = false;
+
+        // 이력서 등록 로직
+        // _no 가 0이면 insert 아니면 update
+        if(personal.getPersonal_no() != 0){
+            registerPersonalResult = personalMapper.update(personal) == 1;
+        }else if(personal.getPersonal_no() == 0){
+            registerPersonalResult = personalMapper.insert(personal) == 1;
+        }
+        log.info("registerPersonal Result -> " + registerPersonalResult);
+
+        if(education.getEducation_group_no() != 0){
+            registerEducationResult = educationMapper.update(education) == 1;
+        } else if(education.getEducation_group_no() == 0){
+            registerEducationResult = educationMapper.insert(education) == 1;
+        }
+        log.info("registerEducationResult Result -> " + registerEducationResult);
+
+        if(training.getTraining_group_no() != 0){
+            registerTrainingResult = trainingMapper.update(training) == 1;
+        } else if(training.getTraining_group_no() == 0){
+            registerTrainingResult = trainingMapper.insert(training) == 1;
+        }
+        log.info("registerTrainingResult Result -> " + registerTrainingResult);
+
+        // 자기소개서 등록 -> 항상 insert
+        registerPersonalStatementResult = personalStatementMapper.insert(personalStatement) == 1;
+        log.info("registerPersonalStatementResult Result -> " + registerPersonalStatementResult);
+
+        registerResult = registerPersonalResult && registerEducationResult && registerTrainingResult && registerPersonalStatementResult;
+
+        return registerResult;
+    }
+
 }
