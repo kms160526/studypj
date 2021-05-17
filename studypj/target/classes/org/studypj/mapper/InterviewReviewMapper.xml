@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.studypj.mapper.InterviewReviewMapper">
+
+<!--    private int interview_review_no;-->
+<!--    private int interview_no;-->
+<!--    private String interview_review_content;-->
+
+<!--    private Date regdate;-->
+
+    <insert id="insert">
+        insert into INTERVIEW_REVIEW (INTERVIEW_NO, INTERVIEW_REVIEW_CONTENT)
+        values (#{interview_no}, #{interview_review_content})
+    </insert>
+
+    <!-- update는 한리뷰의 정보를 조회한 후에 진행하므로 interview_review_no의 정보가 있음 -->
+    <update id="update">
+        update INTERVIEW_REVIEW
+        set INTERVIEW_REVIEW_CONTENT     = #{interview_review_content}
+        where INTERVIEW_REVIEW_NO = #{interview_review_no}
+    </update>
+
+    <!-- 따로 join을 진행하지 않고, 어짜피 1개의 데이터가 있을 것이므로 interview의 _no 정보를 활용하여 조회 -->
+    <select id="read" resultType="org.studypj.domain.InterviewReviewVO">
+        select * from INTERVIEW_REVIEW where INTERVIEW_NO = #{interview_no}
+    </select>
+
+</mapper>

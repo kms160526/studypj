@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.studypj.mapper.InterviewMapper">
+
+    <!--    private int interview_no;-->
+    <!--    private String interview_name;-->
+    <!--    private String interview_date;-->
+    <!--    private String interview_address;-->
+    <!--    private int interview_progress;-->
+
+    <!--    private Date interview_regdate;-->
+
+    <!--    insert into INTERVIEW (INTERVIEW_NAME , INTERVIEW_DATE , INTERVIEW_ADDRESS , INTERVIEW_PROGRESS)-->
+    <!--    values ('테스트', '면접일시는varchar', '서울시강남', 1);-->
+    <!--    1 -> 미진행, 2 -> 진행 -->
+    <insert id="insert">
+        insert into INTERVIEW (INTERVIEW_NAME, INTERVIEW_DATE, INTERVIEW_ADDRESS, INTERVIEW_PROGRESS)
+        values (#{interview_name}, #{interview_date}, #{interview_address}, #{interview_progress})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from INTERVIEW
+        where INTERVIEW_NO = #{interview_no}
+    </delete>
+
+    <update id="update">
+        update INTERVIEW
+        set INTERVIEW_NAME     = #{interview_name},
+            INTERVIEW_DATE     = #{interview_date},
+            INTERVIEW_ADDRESS  = #{interview_address},
+            INTERVIEW_PROGRESS = #{interview_progress}
+        where INTERVIEW_NO = #{interview_no}
+    </update>
+
+    <select id="read" resultType="org.studypj.domain.InterviewVO">
+        select * from INTERVIEW where INTERVIEW_NO = #{interview_no}
+    </select>
+
+    <select id="getListWithPaging" resultType="org.studypj.domain.InterviewVO">
+        select I.interview_no, I.interview_name, I.interview_date, I.interview_address, I.interview_progress, I.interview_regdate
+        from (
+                 select I.*, ROW_NUMBER() OVER (ORDER BY I.interview_no DESC) rownum
+                 from INTERVIEW I
+                 order by I.interview_no desc
+                     LIMIT #{amount}
+                 OFFSET #{startRownum}
+             ) I
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*) from INTERVIEW
+    </select>
+
+</mapper>
