@@ -253,6 +253,7 @@ public class ResumeController {
         EducationVO education = educationService.recentGet();
         TrainingVO training = trainingService.recentGet();
 
+        // TODO : null 값일때 테스트 진행해야함
         // 신상정보
         if(personal != null){
             model.addAttribute("personal", personal);

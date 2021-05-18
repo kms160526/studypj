@@ -13,6 +13,9 @@ public interface InterviewReviewService {
     // update - interviewReview, modify
     public boolean modify(InterviewReviewVO interviewReview);
 
+    // delete - interviewReview, remove
+    public boolean remove(int interview_review_no);
+
     // 페이징 처리 관련 getTotal
     public int getTotal();
 }

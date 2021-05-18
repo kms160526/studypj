@@ -39,6 +39,14 @@ public class InterviewReviewServiceImpl implements InterviewReviewService{
     }
 
     @Override
+    public boolean remove(int interview_review_no) {
+
+        log.info("interviewReview remove ....... targetNo -> " + interview_review_no);
+
+        return interviewReviewMapper.delete(interview_review_no) == 1;
+    }
+
+    @Override
     public int getTotal() {
 
         log.info("getTotal interviewReview .......");

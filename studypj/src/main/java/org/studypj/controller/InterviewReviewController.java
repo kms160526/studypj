@@ -8,9 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.studypj.domain.*;
 import org.studypj.service.InterviewReviewService;
 import org.studypj.service.InterviewService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -75,12 +77,59 @@ public class InterviewReviewController {
     }
 
     // POST - modifyInterviewReview
+    // redirect
+    @PostMapping("/modifyInterviewReview")
+    public String modifyInterviewReview(InterviewReviewVO interviewReview,
+                                        @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+
+        log.info("POST... /modifyPersonalStatement..");
+
+        rttr = resultCheckMethod(interviewReviewService.modify(interviewReview), rttr);
+
+        return "redirect:/interviewReview/interviewReviewList" + cri.getListLink();
+    }
 
     // POST - removeInterviewReview
+    @PostMapping("/removeInterviewReview")
+    public String removeInterviewReview(@RequestParam("interview_review_no") int interview_review_no,
+                                        @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+
+        log.info("POST..... /removeInterviewReview ");
+
+        rttr = resultCheckMethod(interviewReviewService.remove(interview_review_no), rttr);
+
+        return "redirect:/interviewReview/interviewReviewList" + cri.getListLink();
+    }
+
+    // GET - registerInterviewReview
+    @GetMapping("/registerInterviewReview")
+    public void registerInterviewReview(@ModelAttribute("interview_no") int interview_no, @ModelAttribute("cri") Criteria cri){
+
+        log.info("GET...... /registerInterviewReview...");
+    }
 
     // POST - registerInterviewReview
+    @PostMapping("/registerInterviewReview")
+    public String registerInterviewReview(InterviewReviewVO interviewReview, RedirectAttributes rttr){
 
+        log.info("POST....... /registerInterviewReview");
 
+        rttr = resultCheckMethod(interviewReviewService.register(interviewReview), rttr);
 
+        return "redirect:/interviewReview/interviewReviewList";
+
+    }
+
+    // 처리결과가 성공이면 succecc, 실패면 fail
+    // RedirectAttributes rttr 파라미터로 받아옴
+    public RedirectAttributes resultCheckMethod(boolean result, RedirectAttributes rttr) {
+        if (result) {
+            rttr.addFlashAttribute("result", "success");
+        } else {
+            rttr.addFlashAttribute("result", "fail");
+        }
+
+        return rttr;
+    }
 
 }

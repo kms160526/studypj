@@ -60,7 +60,7 @@
                     <td>
                         <c:choose>
                             <c:when test="${interviewJoin.interview_review_no == 0}">
-                                <button data-oper='register' class="btn btn-info">작성</button>
+                                <button data-oper='register' class="btn btn-info" value="${interviewJoin.interview_no}">작성</button>
                             </c:when>
                             <c:otherwise>
                                 <button data-oper='modify' class="btn btn-default" value="${interviewJoin.interview_no}">수정</button>
@@ -122,18 +122,6 @@
             alert("작업이 실패했습니다. ");
         }
 
-        var actionForm = $("#actionForm");
-
-        // .move click 이벤트 -> 전체적으로 수정해야함... .move를 클릭해서 이동하는 것이 아닌 버튼을 클릭해서 이동하는 방식으로
-        $(".move").on("click", function (e) {
-
-            e.preventDefault();
-            // TODO
-            // actionForm.append("<input type='hidden' name='interview_no' value='" + $(this).attr("href") + "'>");
-            // actionForm.attr("action", "/interviewReview/modifyInterviewReview");
-            // actionForm.submit();
-        });
-
         // 페이지 이동을 사용할 form -> modify 할때 정보를 가지고 들어감, register는 해당사항 x
         var actionForm = $("#actionForm");
 
@@ -151,13 +139,16 @@
                 // interview_no 정보 추가
                 actionForm.attr("action", "/interviewReview/modifyInterviewReview");
                 actionForm.append("<input type='hidden' name='interview_no' value='" + $(this).attr("value") + "'>");
-                actionForm.submit();
 
             }else if(operation === 'register'){
                 // register는 page 관련 정보가 필요없으니 location.href 로 이동한다.
                 // 테스트 하기 위해서 home/home으로 이동
-                location.href='/home/home';
+
+                actionForm.empty();
+                actionForm.attr("action", "/interviewReview/registerInterviewReview");
+                actionForm.append("<input type='hidden' name='interview_no' value='" + $(this).attr("value") + "'>");
             }
+            actionForm.submit();
 
         });
 
