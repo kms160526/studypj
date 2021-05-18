@@ -42,6 +42,6 @@
         </ul>
         <ul>
             <li><a class="menu menu-title" href="#">면접처 후기</a></li>
-            <li><a href="#">면접처별 후기 등록</a></li>
+            <li><a href="/interviewReview/interviewReviewList">면접처별 후기 등록</a></li>
         </ul>
     </div>

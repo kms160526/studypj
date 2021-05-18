@@ -48,6 +48,27 @@
              ) I
     </select>
 
+    <select id="getListWithPagingProgress" resultType="org.studypj.domain.InterviewJoinVO">
+        select *
+        from (
+                 select I.interview_no,
+                        I.interview_name,
+                        I.interview_date,
+                        I.interview_address,
+                        I.interview_progress,
+                        I.interview_regdate
+                 from (
+                          select I.*, ROW_NUMBER() OVER (ORDER BY I.interview_no DESC) rownum
+                          from INTERVIEW I
+                          where interview_progress = 2
+                          order by I.interview_no desc LIMIT #{amount}
+                          OFFSET #{startRownum}
+                      ) I
+             ) I
+                 left outer join interview_review IR
+                                 ON (I.INTERVIEW_NO = IR.INTERVIEW_NO);
+    </select>
+
     <select id="getTotalCount" resultType="int">
         select count(*) from INTERVIEW
     </select>

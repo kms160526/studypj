@@ -6,12 +6,12 @@ public interface InterviewReviewMapper {
     // insert Interview
     public int insert(InterviewReviewVO interviewReview);
 
-    // delete Interview
-    public int delete(int interview_review_no);
-
     // update Interview
     public int update(InterviewReviewVO interviewReview);
 
     // read - Interview
-    public InterviewReviewVO read(int interview_review_no);
+    public InterviewReviewVO read(int interview_no);
+
+    // 페이징 처리 관련 - interviewReview의 갯수를 체크
+    public int getTotalCount();
 }

@@ -1,6 +1,7 @@
 package org.studypj.mapper;
 
 import org.studypj.domain.Criteria;
+import org.studypj.domain.InterviewJoinVO;
 import org.studypj.domain.InterviewVO;
 import org.studypj.domain.PersonalStatementVO;
 
@@ -21,13 +22,14 @@ public interface InterviewMapper {
     public InterviewVO read(int interview_no);
 
     // 페이징 처리 관련
-    // total
     public int getTotalCount();
 
     // getListWithPaging
-    // getListWithPaging PersonalStatement
     // getList 페이징 처리
     public List<InterviewVO> getListWithPaging(Criteria cri);
 
+    // getListWithProgress IntreviewReview 화면에서 리스트를 출력하기 위함
+    // intreview_progress == 2 인 것들만 리스트로 가져온다.
+    public List<InterviewJoinVO> getListWithPagingProgress(Criteria cri);
 
 }

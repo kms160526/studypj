@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.studypj.domain.Criteria;
+import org.studypj.domain.InterviewJoinVO;
 import org.studypj.domain.InterviewVO;
 import org.studypj.domain.PersonalStatementVO;
 
@@ -101,5 +102,17 @@ public class InterviewMapperTests {
         list.forEach(interview -> log.info(interview));
     }
 
+    // interview join vo
+    @Test
+    public void testInterviewJoin(){
+        Criteria cri = new Criteria();
+
+        List<InterviewJoinVO> list = mapper.getListWithPagingProgress(cri);
+
+        log.info("get List With Paging -> ");
+
+        list.forEach(interviewJoin -> log.info(interviewJoin));
+
+    }
 
 }
