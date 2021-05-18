@@ -31,6 +31,11 @@ public class InterviewServiceImpl implements InterviewService{
 
         log.info("interview Remove....... targetNo : " + interview_no);
 
+        // interview의 progress를 체크, progress가 2면 false
+        if(!interviewProgressCheck(interview_no)){
+            return false;
+        }
+
         return interviewMapper.delete(interview_no) == 1;
     }
 
@@ -38,6 +43,11 @@ public class InterviewServiceImpl implements InterviewService{
     public boolean modify(InterviewVO interview) {
 
         log.info("interview modify........ ");
+
+        // interview의 progress를 체크, progress가 2면 false
+        if(!interviewProgressCheck(interview.getInterview_no())){
+            return false;
+        }
 
         return interviewMapper.update(interview) == 1;
     }
@@ -72,5 +82,17 @@ public class InterviewServiceImpl implements InterviewService{
         log.info("interview getTotal ........... ");
 
         return interviewMapper.getTotalCount();
+    }
+
+    // interview의 progress를 체크하여 면접본 곳의 정보를 수정하려고하면 false를 return
+    public boolean interviewProgressCheck(int interview_no){
+
+        InterviewVO checkVO =  interviewMapper.read(interview_no);
+
+        if(checkVO.getInterview_progress() == 2){
+            return false;
+        }
+
+        return true;
     }
 }
