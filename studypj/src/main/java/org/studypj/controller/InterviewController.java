@@ -88,8 +88,24 @@ public class InterviewController {
     }
 
     // GET - /registerInterview
+    @GetMapping("/registerInterview")
+    public void registerInterview(){
+
+        log.info("GET....... /registerInterview");
+    }
 
     // POST - /registerInterview
+    @PostMapping("/registerInterview")
+    public String registerInterview(InterviewVO interview, RedirectAttributes rttr){
+
+        log.info("POST........ /registerInterview");
+
+        // TODO: 면접처 주소와 관련된 추가 처리가 필요함. 좌표를 가지고 있는 것도 필요함
+
+        rttr = resultCheckMethod(interviewService.register(interview), rttr);
+
+        return "redirect:/interviewPlace/interviewList";
+    }
 
     // --------- interview 위치 ---------
     // --------- interview 길찾기 --------

@@ -15,7 +15,7 @@
 <div id="content">
     <div class="home">
         <span>
-            면접처 후기 수정하기
+            면접처 후기 등록하기
         </span>
     </div>
 
