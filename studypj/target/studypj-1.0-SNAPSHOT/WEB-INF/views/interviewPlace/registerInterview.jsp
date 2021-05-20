@@ -38,6 +38,9 @@
     <div class="table-wrap">
         <div class="form-wrap">
             <form action="/interviewPlace/registerInterview" method="post">
+                <input type="hidden" name="entX">
+                <input type="hidden" name="entY">
+
                 <div class="form-row">
                     <div>
                         면접처 명칭
@@ -54,7 +57,8 @@
                     <div>
                         면접처 주소
                     </div>
-                    <input type="text" name='interview_address'>
+                    <input type="text" name='interview_address' readonly="readonly">
+                    <button type="button" class="zip_code_btn" onclick="javascript:goPopup();">우편번호</button>
                 </div>
                 <div class="form-row">
                     <div>
@@ -88,7 +92,7 @@
 
         var formObj = $("form");
 
-        $("button").on("click", function(e){
+        $(".btn").on("click", function(e){
 
             // 기존 submit 이벤트를 멈춘다.
             e.preventDefault();
@@ -122,6 +126,32 @@
     });
 
 </script>
+
+<!-- 주소 팝업 스크립트 -->
+<script>
+
+    function goPopup(){
+        // 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrCoordUrl.do)를 호출하게 됩니다.
+        var pop = window.open("${pageContext.request.contextPath}/interviewPlace/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes");
+    }
+
+    function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn
+        , detBdNmList, bdNm, bdKdcd, siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm, buldSlno, mtYn, lnbrMnnm, lnbrSlno
+        , emdNo, entX, entY){
+        // 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
+        console.log(roadAddrPart1);
+        console.log(roadAddrPart2);
+        console.log(entX);
+        console.log(entY);
+        $("input[name='interview_address']").val(roadAddrPart1 + " " +roadAddrPart2 + " " +addrDetail);
+
+        // x좌표, y좌표 -> 추가로 변환작업이 필요하다... -> 그냥 주소만 얻어오기로한다.
+    }
+</script>
+
+
+
+
 </body>
 </html>
 

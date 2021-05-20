@@ -107,7 +107,48 @@ public class InterviewController {
         return "redirect:/interviewPlace/interviewList";
     }
 
-    // --------- interview 위치 ---------
+    // 주소 관련 정보 팝업
+    @RequestMapping("/jusoPopup")
+    public void jusoPopup(){
+
+//        return "/interviewPlace/jusoPopup";
+    }
+
+
+    // --------- interview 위치 /interviewMap ---------
+    // GET - /interviewMapList -> 기존의 GET - /interviewList와 같은 형식으로 작성
+    @GetMapping("/interviewMapList")
+    public String interviewMapList(Model model, Criteria cri){
+
+        log.info("GET /interviewMapList........");
+
+        // cri 계산 - startRownum 설정
+        cri.setStartRownum((cri.getPageNum() -1) * cri.getAmount());
+
+        List<InterviewVO> interviewList = interviewService.getList(cri);
+
+        model.addAttribute("interviewList", interviewList);
+
+        int total = interviewService.getTotal();
+
+        log.info("interview with progress 2 -> total : " + total);
+
+        model.addAttribute("pageMaker", new PageDTO(cri, total));
+
+        return "/interviewPlace/interviewMapList";
+    }
+
+    // GET - /getInterviewMap
+    @GetMapping("/getInterviewMap")
+    public void getInterviewMap(@RequestParam("interview_no") int interview_no,
+                             @ModelAttribute("cri") Criteria cri, Model model){
+
+        log.info("GET- /getInterviewMap....");
+
+        model.addAttribute("interview", interviewService.get(interview_no));
+    }
+
+
     // --------- interview 길찾기 --------
 
 
