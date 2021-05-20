@@ -35,7 +35,7 @@
 <div id="content">
     <div class="home">
         <span>
-            면접처
+            면접처 위치
         </span>
     </div>
 
@@ -70,7 +70,7 @@
                 <div>
                     면접처 위치(지도)
                 </div>
-                <span>지도지도지도지도지도</span>
+                <div id="map" style="width:100%;height:400px;"></div>
             </div>
             <div class="form-row">
                 <div>
@@ -139,13 +139,17 @@
 
 </script>
 
+<!-- 네이버 주소 API -- 위도,경도를 통해 지도에 위치 표시 -->
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=eyjh3k2c64"></script>
 <!-- 네이버 주소 API -- Geocoding 주소를 가져와서 위도, 경도로 반환 -->
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=eyjh3k2c64&submodules=geocoder"></script>
 <script>
     // interview.interview_address 에 있는 체크를 진행해야함.
+    var interviewAddress = "${interview.interview_address}";
+    // TODO: Address의 유효성 검사...
 
     naver.maps.Service.geocode({
-        query: '${interview.interview_address}'
+        query: interviewAddress
     }, function(status, response) {
         if (status !== naver.maps.Service.Status.OK) {
             return alert('Something wrong!');
@@ -155,11 +159,59 @@
             items = result.addresses; // 검색 결과의 배열
 
         // do Something
+        // 지도 정보를 제대로 가지고 오지 못하면 response.v2.addresses[0] 이 "undefined" 이다.
+        if(typeof result.addresses[0] == "undefined"){
+            alert("지도를 불러오는데 실패했습니다. ");
+            return;
+        }
+
+        // log 체크
         console.log(result.addresses[0].x);
         console.log(result.addresses[0].y);
         // x좌표와 y좌표를 등록
 
+        var entX = result.addresses[0].x;
+        var entY = result.addresses[0].y;
+
+        var mapOptions = {
+            center: new naver.maps.LatLng(entY,entX),
+            zoom: 16
+        };
+
+        var map = new naver.maps.Map('map', mapOptions);
+
+        // 지도에 마커 옵션 추가
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(entY, entX),
+            map: map
+        });
+
+        // 마커 위에 추가 정보 출력 -- infowindow 관련 이벤트 설정, 마커를 클릭하면 popup
+        var contentString = [
+            '<div class="iw_inner">',
+            '   <br/><h3 align="center">${interview.interview_name}</h3><br/>',
+            '   <p align="center">${interview.interview_address}<br/></p><br/>',
+            '   <p align="center">${interview.interview_date}<br/></p><br/>',
+            '</div>'
+        ].join('');
+
+        var infowindow = new naver.maps.InfoWindow({
+            content: contentString
+        });
+
+        naver.maps.Event.addListener(marker, "click", function(e) {
+            if (infowindow.getMap()) {
+                infowindow.close();
+            } else {
+                infowindow.open(map, marker);
+            }
+        });
+
+        infowindow.open(map, marker);
+
+        // end naver.maps.Service.geocode
     });
+
 
 </script>
 </body>

@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: kimminsu
   Date: 2021/05/20
-  Time: 4:39 오후
+  Time: 5:55 오후
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -35,7 +35,7 @@
 <div id="content">
     <div class="home">
         <span>
-            면접처 위치
+            면접처 길찾기(지도)
         </span>
     </div>
 
@@ -216,3 +216,4 @@
 </script>
 </body>
 </html>
+

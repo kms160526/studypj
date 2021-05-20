@@ -38,7 +38,7 @@
             <li><a class="menu menu-title" href="#">면접처 리스트</a></li>
             <li><a href="/interviewPlace/interviewList">면접처 등록 / 수정 / 보기</a></li>
             <li><a href="/interviewPlace/interviewMapList">면접처 위치(지도)</a></li>
-            <li><a href="#">면접처 길찾기(지도)</a></li>
+            <li><a href="/interviewPlace/interviewDirectionList">면접처 길찾기(지도)</a></li>
         </ul>
         <ul>
             <li><a class="menu menu-title" href="#">면접처 후기</a></li>

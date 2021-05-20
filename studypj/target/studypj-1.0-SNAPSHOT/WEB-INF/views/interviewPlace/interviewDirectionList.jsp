@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: kimminsu
   Date: 2021/05/20
-  Time: 4:39 오후
+  Time: 5:55 오후
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -21,7 +21,7 @@
 <div id="content">
     <div class="home">
         <span>
-            면접처 위치(지도)
+            면접처 길찾기(지도)
         </span>
     </div>
     <div class="table-wrap">
@@ -84,7 +84,7 @@
 </div>
 
 <!-- actionForm 페이징처리 관련 -->
-<form id='actionForm' action="/interviewPlace/interviewMapList" method='get'>
+<form id='actionForm' action="/interviewPlace/interviewDirectionList" method='get'>
     <input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
     <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 </form>
@@ -113,7 +113,7 @@
 
             e.preventDefault();
             actionForm.append("<input type='hidden' name='interview_no' value='" + $(this).attr("href") + "'>");
-            actionForm.attr("action", "/interviewPlace/getInterviewMap");
+            actionForm.attr("action", "/interviewPlace/getInterviewDirection");
             actionForm.submit();
         });
 
@@ -139,3 +139,4 @@
 
 </body>
 </html>
+

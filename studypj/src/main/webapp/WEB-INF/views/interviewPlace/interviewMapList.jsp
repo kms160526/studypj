@@ -84,7 +84,7 @@
 </div>
 
 <!-- actionForm 페이징처리 관련 -->
-<form id='actionForm' action="/interviewPlace/interviewList" method='get'>
+<form id='actionForm' action="/interviewPlace/interviewMapList" method='get'>
     <input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
     <input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 </form>

@@ -115,7 +115,7 @@ public class InterviewController {
     }
 
 
-    // --------- interview 위치 /interviewMap ---------
+    // --------- interview 위치 ... /interviewMap ---------
     // GET - /interviewMapList -> 기존의 GET - /interviewList와 같은 형식으로 작성
     @GetMapping("/interviewMapList")
     public String interviewMapList(Model model, Criteria cri){
@@ -149,7 +149,38 @@ public class InterviewController {
     }
 
 
-    // --------- interview 길찾기 --------
+    // --------- interview 길찾기 /interviewDirection --------
+    @GetMapping("/interviewDirectionList")
+    public String interviewDirectionList(Model model, Criteria cri){
+
+        log.info("GET /interviewDirectionList........");
+
+        // cri 계산 - startRownum 설정
+        cri.setStartRownum((cri.getPageNum() -1) * cri.getAmount());
+
+        List<InterviewVO> interviewList = interviewService.getList(cri);
+
+        model.addAttribute("interviewList", interviewList);
+
+        int total = interviewService.getTotal();
+
+        log.info("interview with progress 2 -> total : " + total);
+
+        model.addAttribute("pageMaker", new PageDTO(cri, total));
+
+        return "/interviewPlace/interviewDirectionList";
+    }
+
+
+    // GET - /getInterviewMap
+    @GetMapping("/getInterviewDirection")
+    public void getInterviewDirection(@RequestParam("interview_no") int interview_no,
+                                @ModelAttribute("cri") Criteria cri, Model model){
+
+        log.info("GET- /getInterviewDirection....");
+
+        model.addAttribute("interview", interviewService.get(interview_no));
+    }
 
 
 
