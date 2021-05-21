@@ -35,13 +35,6 @@
             면접처 후기 리스트
         </span>
 
-        <!--TODO 없애고 register 만들어야함 -->
-        <div class="reg-btn-wrap">
-            <div class="reg-btn-div">
-                <button id="reg-btn" onclick="location.href='/interviewReview/registerInterviewReview'">register</button>
-            </div>
-        </div>
-
     </div>
     <div class="table-wrap">
         <table class="table">

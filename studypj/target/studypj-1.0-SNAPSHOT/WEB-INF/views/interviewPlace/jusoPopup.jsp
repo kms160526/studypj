@@ -45,7 +45,7 @@
     %>
 </head>
 <script language="javascript">
-    // document.domain = "http://localhost:8090/interviewPlace/registerInterview"
+    // document.domain = "http://localhost:8090/"
     function init(){
         var url = location.href;
         var confmKey = "devU01TX0FVVEgyMDIxMDUxODE1MjU1MDExMTE3Nzc="; //승인키

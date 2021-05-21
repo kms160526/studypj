@@ -214,6 +214,49 @@
 
 
 </script>
+<script>
+    // 네이버 API Ajax 테스트
+    $(document).ready(function(){
+        // $.ajax(function(){
+        //
+        // });
+
+            // start={출발지}&goal={목적지}&option={탐색옵션}
+
+        // 주소는 {경도,위도} , 출발지는 우리집주소에서 출발, 목적지는 목적지의 위도경도..
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/interviewPlace/naverAPI",
+            data:
+                {
+                },
+            dataType: "text",
+            type: "GET",
+            async: false,
+            success: function (data) {
+                console.log("API 통신 성공 ");
+                console.log(data);
+
+                // $.each(data, function (key, val) {
+                //
+                //     // 받아온 데이터 처리
+                //
+                // });
+            },
+            error: function(request, status, error){
+                // console.log(error);
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+            }
+        });
+
+
+
+
+    });
+
+
+</script>
 </body>
 </html>
 
