@@ -5,7 +5,7 @@ import org.studypj.domain.ResumeAttachVO;
 import java.util.List;
 
 public interface ResumeAttachMapper {
-    public void insert(ResumeAttachVO vo);
+    public int insert(ResumeAttachVO resumeAttach);
 
     public void delete(String uuid);
 

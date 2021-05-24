@@ -369,7 +369,7 @@
         console.log(formData);
 
         //기존 파일이 있다면 삭제를 먼저 진행
-        if($("input[name='attachList[0].uploadPath']").length>0){
+        if($("input[name='uploadPath']").length>0){
             deleteFile();
         }
 
@@ -418,10 +418,10 @@
             // 이미지 src를 변경
             $(".personal-img").attr("src", "/display?fileName=" + fileCallPath);
 
-            str += "<input type='hidden' name='attachList[" + i + "].fileName' value='" + obj.fileName + "'>";
-            str += "<input type='hidden' name='attachList[" + i + "].uuid' value='" + obj.uuid + "'>";
-            str += "<input type='hidden' name='attachList[" + i + "].uploadPath' value='" + obj.uploadPath + "'>";
-            str += "<input type='hidden' name='attachList[" + i + "].fileType' value='true'>";
+            str += "<input type='hidden' name='fileName' value='" + obj.fileName + "'>";
+            str += "<input type='hidden' name='uuid' value='" + obj.uuid + "'>";
+            str += "<input type='hidden' name='uploadPath' value='" + obj.uploadPath + "'>";
+            str += "<input type='hidden' name='fileType' value='true'>";
 
         });
 
@@ -435,8 +435,8 @@
 
         console.log("delete file");
 
-        var fileCallPath = encodeURIComponent( $("input[name='attachList[0].uploadPath']").val()
-            + "/s_" + $("input[name='attachList[0].uuid']").val() + "_" + $("input[name='attachList[0].fileName']").val());
+        var fileCallPath = encodeURIComponent( $("input[name='uploadPath']").val()
+            + "/s_" + $("input[name='uuid']").val() + "_" + $("input[name='fileName']").val());
 
         var targetFile = fileCallPath;
 
@@ -450,10 +450,10 @@
             type: 'POST',
             success: function(result){
                 console.log(result);
-                $("input[name='attachList[0].fileName']").remove();
-                $("input[name='attachList[0].uuid']").remove();
-                $("input[name='attachList[0].uploadPath']").remove();
-                $("input[name='attachList[0].fileType']").remove();
+                $("input[name='fileName']").remove();
+                $("input[name='uuid']").remove();
+                $("input[name='uploadPath']").remove();
+                $("input[name='fileType']").remove();
             } // success
         }); // end ajax
 

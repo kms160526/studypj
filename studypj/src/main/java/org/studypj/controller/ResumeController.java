@@ -285,11 +285,14 @@ public class ResumeController {
     // POST - register resume
     @PostMapping("/registerResume")
     public String registerResume(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement,
-                                 EducationVO education, TrainingVO training, RedirectAttributes rttr){
+                                 EducationVO education, TrainingVO training, ResumeAttachVO resumeAttach, RedirectAttributes rttr){
 
         log.info("POST... /registerResume.." + resume );
 
         // 사진 관련 처리
+        // resumeAttach 잘 가져오나 테스트
+        log.info("resumeAttach -> " + resumeAttach);
+
 
         // TODO: 유효성 체크를 하고 register를 시도해야한다.
         // 개인싱상정보의 유효성체크
@@ -297,7 +300,8 @@ public class ResumeController {
         // 교육사항의 유효성체크
 
         // 이력서 등록
-        rttr = resultCheckMethod(resumeService.register(resume, personal, personalStatement, education, training), rttr);
+        // 추가 -> resumeAttach 정보도 같이 전달하여 처리한다.
+        rttr = resultCheckMethod(resumeService.register(resume, personal, personalStatement, education, training, resumeAttach), rttr);
 
         // register는 처리 후 첫 페이지의 화면을 보여주면 좋을것같다.
         return "redirect:/resume/resumeList";

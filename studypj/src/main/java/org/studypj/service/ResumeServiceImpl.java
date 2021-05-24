@@ -29,6 +29,9 @@ public class ResumeServiceImpl implements ResumeService{
     @Setter(onMethod_ = @Autowired)
     private PersonalStatementMapper personalStatementMapper;
 
+    @Setter(onMethod_ = @Autowired)
+    private ResumeAttachMapper resumeAttachMapper;
+
 
     @Override
     public boolean register(ResumeVO resume) {
@@ -43,7 +46,7 @@ public class ResumeServiceImpl implements ResumeService{
     // 실제 데이터가 들어있는 이력서 등록 메서드
     @Transactional
     @Override
-    public boolean register(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement, EducationVO education, TrainingVO training) {
+    public boolean register(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement, EducationVO education, TrainingVO training, ResumeAttachVO resumeAttach) {
 
         log.info("resume register...........service");
 
@@ -51,6 +54,7 @@ public class ResumeServiceImpl implements ResumeService{
         boolean registerResult = false;
         boolean registerSubResult = false;
         boolean registerResumeResult = false;
+        boolean registerResumeAttachResult = false;
 
         // 신상정보, 자기소개서, 학력, 교육 정보 insert
         registerSubResult =  subRegister(personal, personalStatement, education, training);
@@ -71,8 +75,22 @@ public class ResumeServiceImpl implements ResumeService{
         registerResumeResult = resumeMapper.insert(resume) == 1;
         log.info("registerResumeResult Result -> " + registerResumeResult);
 
+        // 첨부파일이 없을경우 registerResumeAttachResult는 true로 한다.
+        if(resumeAttach.getUuid() != null){
+            // resume를 등록했기 때문에 resume_no가 생겼다.
+            // 사진 관련된 정보 ATTACH 테이블에 추가한다.
+            resume = resumeMapper.recentRead();
+            resumeAttach.setResume_no(resume.getResume_no());
+
+            registerResumeAttachResult = resumeAttachMapper.insert(resumeAttach) == 1;
+            log.info("registerResumeAttachResult Result -> " + registerResumeAttachResult);
+        }else{
+            log.info("Attach X");
+            registerResumeAttachResult = true;
+        }
+
         // 전부 정상적으로 처리되었다면 registerResult는 true;
-        registerResult = registerResumeResult && registerResumeResult && registerSubResult;
+        registerResult = registerResumeResult && registerResumeResult && registerSubResult && registerResumeAttachResult;
         log.info("register resume Result -> " + registerResult);
 
         return registerResult;

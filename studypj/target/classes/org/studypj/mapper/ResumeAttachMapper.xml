@@ -3,24 +3,20 @@
 <mapper namespace="org.studypj.mapper.ResumeAttachMapper">
 
     <insert id="insert">
-        insert into tbl_attach (uuid, uploadpath, fileName, filetype, bno)
-        values (#{uuid}, #{uploadPath}, #{fileName}, #{fileType}, #{bno})
+        insert into attach (uuid, uploadpath, fileName, filetype, resume_no)
+        values (#{uuid}, #{uploadPath}, #{fileName}, #{fileType}, #{resume_no})
     </insert>
 
     <delete id="delete">
-        delete from tbl_attach where uuid = #{uuid}
+        delete from attach where uuid = #{uuid}
     </delete>
 
-    <select id="findByBno" resultType="org.zerock.domain.BoardAttachVO">
-        select * from tbl_attach where bno = #{bno}
+    <select id="findByResumeNo" resultType="org.studypj.domain.ResumeAttachVO">
+        select * from attach where resume_no = #{resume_no}
     </select>
 
     <delete id="deleteAll">
-        delete tbl_attach where bno = #{bno}
+        delete attach where resume_no = #{resume_no}
     </delete>
-
-    <select id="getOldFiles" resultType="org.zerock.domain.BoardAttachVO">
-        select * from tbl_attach where uploadpath = to_char(sysdate-1, 'yyyy/mm/dd')
-    </select>
 
 </mapper>

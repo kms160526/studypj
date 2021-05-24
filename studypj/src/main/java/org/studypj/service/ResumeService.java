@@ -11,7 +11,7 @@ public interface ResumeService {
 
     // 실제 이력서 등록 서비스
     public boolean register(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement,
-                            EducationVO education, TrainingVO training);
+                            EducationVO education, TrainingVO training, ResumeAttachVO resumeAttach);
 
     public boolean remove(int resume_no);
 

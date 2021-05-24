@@ -98,4 +98,15 @@ public class ResumeMapperTests {
 
     }
 
+    // test recentRead
+    @Test
+    public void testRecentRead(){
+        ResumeVO vo = null;
+
+        vo = mapper.recentRead();
+
+        log.info("RecentResumeVo -> "  + vo);
+
+    }
+
 }

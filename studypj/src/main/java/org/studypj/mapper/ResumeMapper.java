@@ -2,6 +2,7 @@ package org.studypj.mapper;
 
 import org.studypj.domain.Criteria;
 import org.studypj.domain.PersonalStatementVO;
+import org.studypj.domain.PersonalVO;
 import org.studypj.domain.ResumeVO;
 
 import java.util.List;
@@ -28,4 +29,7 @@ public interface ResumeMapper {
     // getListWithPaging PersonalStatement
     // getList 페이징 처리
     public List<ResumeVO> getListWithPaging(Criteria cri);
+
+    // recentRead - 첨부파일의 처리 관련
+    public ResumeVO recentRead();
 }

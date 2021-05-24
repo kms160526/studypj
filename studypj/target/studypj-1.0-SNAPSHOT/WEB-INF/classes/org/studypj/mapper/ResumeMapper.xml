@@ -47,5 +47,13 @@
         where RESUME_NO = #{resume_no}
     </update>
 
-
+    <!-- 가장 최근의 정보를 읽어옴 첨부파일의 등록에서 사용 -->
+    <select id="recentRead" resultType="org.studypj.domain.ResumeVO">
+        select r.*
+        from RESUME r
+                 join (
+            select MAX(mx.RESUME_NO) AS max_RESUME_NO
+            from RESUME mx
+        ) m on m.max_RESUME_NO = r.RESUME_NO;
+    </select>
 </mapper>
