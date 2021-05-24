@@ -35,6 +35,17 @@
             <form name="personal-form">
                 <div class="form-row">
                     <div>
+                        <img class="personal-img" src="${pageContext.request.contextPath}/resources/img/attach.png" height="200px" width="300px" style="margin:10px">
+                    </div>
+                </div>
+                <div class="form-row" id="uploadDiv">
+                    <div>
+                        사진추가
+                    </div>
+                    <input type="file" name='uploadPic'>
+                </div>
+                <div class="form-row">
+                    <div>
                         이름_한글
                     </div>
                     <input type="text" name='name_ko' value='${personal.name_ko}'>
@@ -157,12 +168,17 @@
 
         <!-- 자기소개서 form-wrap -->
         <div class="form-wrap">
-            <form name="persnalStatement-form">
+            <form name="personalStatement-form">
                 <div class="form-row">
                     <div>
-                        <!-- 클릭하면 팝업창으로 수정하는 방법도 좋은것 같다. -->
                         자기소개서
                     </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        자기소개서 불러오기
+                    </div>
+                    <button class="btn-select-personalStatement" style='margin:10px'>불러오기</button>
                 </div>
                 <div class="form-row">
                     <div>
@@ -214,7 +230,7 @@
 
         var formObj = $("form[name='action-form']");
 
-        $("button").on("click", function(e){
+        $(".btn").on("click", function(e){
             // 버튼 클릭 당시의 값을 가져와야 한다.
             // jstl로 하지말고 다르게
 
@@ -234,6 +250,8 @@
 
                 // action-form 에 register를 하기위한 정보를 모두 담는다.
                 fnRegisterResume(formObj);
+
+                // 사진 관련된 정보들 form에 담아서 전달하기
 
             }
 
@@ -309,6 +327,137 @@
     // 이메일체크함수
 
 
+
+    // 이력서 사진관련처리
+    var regex = new RegExp("(.*?)\.(jpg|gif|png|bmp|svg|jpeg|jfif)$");
+    var maxSize = 5242880; // 5MB
+
+    function checkExtension(fileName, fileSize){
+
+        if(fileSize >= maxSize){
+            alert("파일 사이즈 초과");
+            return false;
+        }
+
+        if(!regex.test(fileName)){
+            alert("해당 종류의 파일은 업로드 할 수 없습니다");
+            return false;
+        }
+
+        return true;
+    }
+
+    // 파일의 변화가 있으면 change, -> 기존파일의 삭제도 같이 진행
+    $("input[type='file']").change(function(e){
+
+        var formData = new FormData();
+
+        var inputFile = $("input[name='uploadPic']");
+
+        var files = inputFile[0].files;
+
+        console.log(files);
+
+        for(var i=0; i < files.length; i++){
+            if(!checkExtension(files[i].name, files[i].size)){
+                return false;
+            }
+
+            formData.append("uploadFile", files[i]);
+        }
+
+        console.log(formData);
+
+        //기존 파일이 있다면 삭제를 먼저 진행
+        if($("input[name='attachList[0].uploadPath']").length>0){
+            deleteFile();
+        }
+
+        // processData와 contentType은 false로 지정해줘야 파일 전송이 가능
+
+        $.ajax({
+            url: '/uploadAjaxAction',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'post',
+            success: function(result){
+                console.log("Uploaded");
+                showUploadResult(result);
+
+            },
+            error: function(request, status, error){
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+
+            // end Ajax
+        });
+
+        // end file change
+    });
+
+
+    function fnRegisterPic() {
+
+
+    }
+
+    // 업로드된 파일의 정보를 읽어서 form에 정보를 담고, 섬네일을 출력하는 함수
+    function showUploadResult(uploadResultArr){
+        var formObj = $("form[name='action-form']");
+
+        if(!uploadResultArr || uploadResultArr.length == 0) { return; }
+
+        var str = "";
+
+        $(uploadResultArr).each(function(i, obj){
+
+            // image type
+            var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+
+            // 이미지 src를 변경
+            $(".personal-img").attr("src", "/display?fileName=" + fileCallPath);
+
+            str += "<input type='hidden' name='attachList[" + i + "].fileName' value='" + obj.fileName + "'>";
+            str += "<input type='hidden' name='attachList[" + i + "].uuid' value='" + obj.uuid + "'>";
+            str += "<input type='hidden' name='attachList[" + i + "].uploadPath' value='" + obj.uploadPath + "'>";
+            str += "<input type='hidden' name='attachList[" + i + "].fileType' value='true'>";
+
+        });
+
+        formObj.append(str);
+
+    }   // end showUploadResult function
+
+
+    // 이미지를 변경했을 때 기존의 파일을 삭제하는 함수
+    function deleteFile(){
+
+        console.log("delete file");
+
+        var fileCallPath = encodeURIComponent( $("input[name='attachList[0].uploadPath']").val()
+            + "/s_" + $("input[name='attachList[0].uuid']").val() + "_" + $("input[name='attachList[0].fileName']").val());
+
+        var targetFile = fileCallPath;
+
+        // image 타입만 처리
+        var type = "image";
+
+        $.ajax({
+            url: '/deleteFile',
+            data: {fileName: targetFile, type: type},
+            dataType: 'text',
+            type: 'POST',
+            success: function(result){
+                console.log(result);
+                $("input[name='attachList[0].fileName']").remove();
+                $("input[name='attachList[0].uuid']").remove();
+                $("input[name='attachList[0].uploadPath']").remove();
+                $("input[name='attachList[0].fileType']").remove();
+            } // success
+        }); // end ajax
+
+    } // end function deleteFile()
 
 </script>
 </body>

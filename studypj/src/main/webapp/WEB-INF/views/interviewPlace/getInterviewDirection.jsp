@@ -99,7 +99,6 @@
                        readonly="readonly">
             </div>
 
-
             <div class="button-wrap">
 
                 <button data-oper='list' class="btn btn-info" >List</button>
@@ -144,11 +143,6 @@
 <!-- 네이버 주소 API -- Geocoding 주소를 가져와서 위도, 경도로 반환 -->
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=eyjh3k2c64&submodules=geocoder"></script>
 <script>
-
-
-
-</script>
-<script>
     // 네이버 API Ajax 테스트
     $(document).ready(function(){
 
@@ -165,7 +159,6 @@
             var result = response.v2, // 검색 결과의 컨테이너
                 items = result.addresses; // 검색 결과의 배열
 
-            // do Something
             // 지도 정보를 제대로 가지고 오지 못하면 response.v2.addresses[0] 이 "undefined" 이다.
             if(typeof result.addresses[0] == "undefined"){
                 alert("지도를 불러오는데 실패했습니다. ");
@@ -193,11 +186,34 @@
                 map: map
             });
 
+            // 마커 위에 추가 정보 출력 -- infowindow 관련 이벤트 설정, 마커를 클릭하면 popup
+            var contentString = [
+                '<div class="iw_inner">',
+                '   <br/><h3 align="center">${interview.interview_name}</h3><br/>',
+                '   <p align="center">${interview.interview_address}<br/></p><br/>',
+                '   <p align="center">${interview.interview_date}<br/></p><br/>',
+                '</div>'
+            ].join('');
+
+            var infowindow = new naver.maps.InfoWindow({
+                content: contentString
+            });
+
+            naver.maps.Event.addListener(marker, "click", function(e) {
+                if (infowindow.getMap()) {
+                    infowindow.close();
+                } else {
+                    infowindow.open(map, marker);
+                }
+            });
+
+            infowindow.open(map, marker);
+
             // 선 표시
             var polyline = new naver.maps.Polyline({
                 map: map,
                 path: [
-                    // 출발지
+                    // 출발지(집)
                     new naver.maps.LatLng(37.6216094, 127.0105107)
                 ]
             });
@@ -214,7 +230,7 @@
 
             // pathResult에 담겨있는 결과들을 path에 push
             $.each(pathResult, function (index, value) {
-                // value[1], value[0]///
+                // value[1], value[0] 각각 x,y 좌표
                 path.push(new naver.maps.LatLng(value[1], value[0]));
             });
 
@@ -264,8 +280,6 @@
             return pathResult;
             // end fncPathResult
         }
-
-
 
         // end document
     });

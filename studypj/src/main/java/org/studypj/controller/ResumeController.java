@@ -245,6 +245,8 @@ public class ResumeController {
 
         log.info("GET....... /registerResume");
 
+        // 사진 관련 정보를 ATTACH 테이블에 저장한다.
+
         // 기본적으로 register는 기존의 가장 최신 정보를 가져와서 작성하고 새로운 _no 로 insert 한다.
         // 만약 최근의 데이터가 없다면 ? -> update가 아니라 insert 하는 작업을 실행해야 한다.
 

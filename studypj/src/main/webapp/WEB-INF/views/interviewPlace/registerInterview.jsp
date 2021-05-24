@@ -25,6 +25,10 @@
         width: 150px;
     }
 
+    .zip_code_btn{
+        margin: 10px;
+    }
+
 </style>
 
 <!-- 본문 -->
@@ -58,7 +62,7 @@
                         면접처 주소
                     </div>
                     <input type="text" name='interview_address' readonly="readonly">
-                    <button type="button" class="zip_code_btn" onclick="javascript:goPopup();">우편번호</button>
+                    <button type="button" class="zip_code_btn" onclick="javascript:goPopup();">주소찾기</button>
                 </div>
                 <div class="form-row">
                     <div>
@@ -106,6 +110,21 @@
                 // TODO register 할때 주소정보 관련한 처리가 필요함
                 console.log("register 클릭");
 
+                // 주소는 공란일 수 없습니다.
+                if($("input[name='interview_address']").val() == ""){
+                    $("input[name='interview_address']").focus();
+                    alert("면접처주소는 공란일 수 없습니다.");
+                    return;
+                }
+
+                // 면접처 명칭은 공란일 수 없습니다.
+                if($("input[name='interview_name']").val() == ""){
+                    $("input[name='interview_name']").focus();
+                    alert("면접처 명칭은 공란일 수 없습니다.");
+                    return;
+                }
+
+
             }else if(operation === 'list'){
                 // formObj 의 내용을 지운다.
                 formObj.empty();
@@ -115,7 +134,6 @@
             }
 
             // TODO submit() 하기전에 유효성 체크를 진행해야함
-            // TODO API사용해서 주소정보를 얻어와야함 관련 처리 추가 필요.
 
             formObj.submit();
             // end $("button").on("click", function(e){

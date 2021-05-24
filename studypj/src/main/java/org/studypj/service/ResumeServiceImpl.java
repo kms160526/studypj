@@ -185,7 +185,7 @@ public class ResumeServiceImpl implements ResumeService{
         }
         log.info("registerTrainingResult Result -> " + registerTrainingResult);
 
-        // 자기소개서 등록 -> 항상 insert
+        // 자기소개서 등록 -> 항상 insert, 자기소개서의 작성은 따로 한다.
         registerPersonalStatementResult = personalStatementMapper.insert(personalStatement) == 1;
         log.info("registerPersonalStatementResult Result -> " + registerPersonalStatementResult);
 

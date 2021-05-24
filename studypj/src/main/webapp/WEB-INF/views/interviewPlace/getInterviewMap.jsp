@@ -158,7 +158,6 @@
         var result = response.v2, // 검색 결과의 컨테이너
             items = result.addresses; // 검색 결과의 배열
 
-        // do Something
         // 지도 정보를 제대로 가지고 오지 못하면 response.v2.addresses[0] 이 "undefined" 이다.
         if(typeof result.addresses[0] == "undefined"){
             alert("지도를 불러오는데 실패했습니다. ");

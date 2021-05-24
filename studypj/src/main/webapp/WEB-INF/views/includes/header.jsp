@@ -15,7 +15,7 @@
     <link href="/resources/css/reset.css" rel="stylesheet" type="text/css">
 
     <!-- template CSS -->
-    <link href="${pageContext.request.contextPath}/resources/css/template.css" rel="stylesheet" type="text/css">
+        <link href="${pageContext.request.contextPath}/resources/css/template.css" rel="stylesheet" type="text/css">
 
 </head>
 
