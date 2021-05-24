@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>Interview Home</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <!-- Reset CSS -->
     <link href="/resources/css/reset.css" rel="stylesheet" type="text/css">

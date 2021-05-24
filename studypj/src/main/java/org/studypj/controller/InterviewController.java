@@ -3,6 +3,7 @@ package org.studypj.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.http.HttpResponse;
@@ -194,167 +195,30 @@ public class InterviewController {
 
         model.addAttribute("interview", interviewService.get(interview_no));
 
-        // https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving
-        // start={출발지}&goal={목적지}&option={탐색옵션}
-
-//            xhr.setRequestHeader("X-NCP-APIGW-API-KEY-ID","eyjh3k2c64");
-//            xhr.setRequestHeader("X-NCP-APIGW-API-KEY","lNUkTFWZxP9r8ZpBONTYaSf5bRsdsvZhrrou0oi0");
-
-        // restTemplate
-
-//        start : "127.1054065,37.3595669",
-//                goal : "126.9784147,37.5666805"
-
-//        String re = naverAPI();
-//        log.info("api호출 결과 :::::: " + re);
-
-
     }
-
-//    // 이동경로 좌표 반환 - 네이버 길찾기 API
-//    @GetMapping("/naverAPI")
-//    @CrossOrigin(origins = "*")
-//    @ResponseBody
-//    public ResponseEntity<String> naverAPI() throws URISyntaxException, IOException {
-//
-//        // URL 인코딩..
-//        URI redirectUri2 = new URI("https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start%3d%7b127.1054065%2c37.3595669%7d%26goal%3d%7b126.9784147%2c37.5666805%7d");
-//        String url = "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start%3d%7b127.1054065%2c37.3595669%7d%26goal%3d%7b126.9784147%2c37.5666805%7d";
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        headers.add("X-NCP-APIGW-API-KEY-ID","eyjh3k2c64");
-//        headers.add("X-NCP-APIGW-API-KEY","lNUkTFWZxP9r8ZpBONTYaSf5bRsdsvZhrrou0oi0");
-//
-//        HttpEntity<String> request = new HttpEntity<>(headers);
-//
-////        String res = restTemplate.getForObject(redirectUri2, request);
-////        log.info("res ------------>>>>>>>>>> " + res);
-//
-//        ResponseEntity<String> response = restTemplate.exchange(
-//                redirectUri2, HttpMethod.GET, request, String.class);
-////        // 네이버 API URL
-////        URL redirectUri = new URL("https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start%3d%7b127.1054065%2c37.3595669%7d%26goal%3d%7b126.9784147%2c37.5666805%7d");
-////
-////        HttpURLConnection conn = (HttpURLConnection) redirectUri.openConnection();
-////
-////        conn.setRequestProperty("X-NCP-APIGW-API-KEY-ID","eyjh3k2c64");
-////        conn.setRequestProperty("X-NCP-APIGW-API-KEY","lNUkTFWZxP9r8ZpBONTYaSf5bRsdsvZhrrou0oi0");
-////        conn.setRequestProperty("Content-Type", "application/json");
-////
-////        // request에 JSON 데이터 준비
-////        conn.setDoOutput(true);
-////        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-////
-////        // commands라는 JSONArray를 담을 JSONObject 생성
-//////        JsonObject commands = new JsonObject();
-//////        commands.put("commands", commands)
-////
-////        JsonObject responseJson = null;
-////        int responseCode = conn.getResponseCode();
-////        log.info("responseCode -> " + responseCode);
-////
-////        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-////        StringBuilder sb = new StringBuilder();
-////        String line = "";
-////        while((line = br.readLine()) != null){
-////            sb.append(line);
-////        }
-////
-////        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//
-////        HttpHeaders httpHeaders = new HttpHeaders();
-////        httpHeaders.setLocation(redirectUri);
-////        httpHeaders.add("X-NCP-APIGW-API-KEY-ID","eyjh3k2c64");
-////        httpHeaders.add("X-NCP-APIGW-API-KEY","lNUkTFWZxP9r8ZpBONTYaSf5bRsdsvZhrrou0oi0");
-//
-////        @GetMapping("/https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start={출발지}&goal={목적지}")
-//
-////        return ResponseEntity.created(redirectUri).headers(httpHeaders).build();
-////        return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
-////        return gson.toJson(sb.toString());
-//
-//        return response;
-//
-//    }
-
-
-
-//    // 이동경로 좌표 반환 - 네이버 길찾기 API
-//    @GetMapping("/naverAPI")
-//    @CrossOrigin(origins = "*")
-//    @ResponseBody
-//    public String naverAPI() throws URISyntaxException, IOException {
-//
-////        // 네이버 API URL
-//        String apiURL = "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=127.1058342,37.359708&goal=129.075986,35.179470";
-//        URL redirectUri = new URL(apiURL);
-//
-//        HttpURLConnection conn = (HttpURLConnection) redirectUri.openConnection();
-//
-//        conn.setRequestMethod("GET");
-//        conn.setRequestProperty("X-NCP-APIGW-API-KEY-ID","eyjh3k2c64");
-//        conn.setRequestProperty("X-NCP-APIGW-API-KEY","lNUkTFWZxP9r8ZpBONTYaSf5bRsdsvZhrrou0oi0");
-//        conn.setRequestProperty("Content-Type", "application/json");
-//
-//        // request에 JSON 데이터 준비
-//        conn.setDoOutput(true);
-//        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-//
-//        // commands라는 JSONArray를 담을 JSONObject 생성
-////        JsonObject commands = new JsonObject();
-////        commands.put("commands", commands)
-//
-//        JsonObject responseJson = null;
-//        int responseCode = conn.getResponseCode();
-//        log.info("responseCode -> " + responseCode);
-//
-//        BufferedReader br;
-//
-//        if(responseCode==200) { // 정상 호출
-//            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//        } else {  // 에러 발생
-//            br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-//        }
-//
-//        StringBuilder sb = new StringBuilder();
-//        StringBuffer sb2 = new StringBuffer();
-//
-//        String line = "";
-//        while((line = br.readLine()) != null){
-//            sb2.append(line);
-//        }
-//        br.close();
-//        log.info(sb2.toString());
-//
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//
-////        HttpHeaders httpHeaders = new HttpHeaders();
-////        httpHeaders.add("X-NCP-APIGW-API-KEY-ID","eyjh3k2c64");
-////        httpHeaders.add("X-NCP-APIGW-API-KEY","lNUkTFWZxP9r8ZpBONTYaSf5bRsdsvZhrrou0oi0");
-//
-////        @GetMapping("/https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start={출발지}&goal={목적지}")
-//
-//
-//        return gson.toJson(sb);
-////        return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
-////        return gson.toJson(sb.toString());
-//
-////        return response;
-//
-//    }
-
 
 
     // 이동경로 좌표 반환 - 네이버 길찾기 API
-    @GetMapping("/naverAPI")
+//    @GetMapping("/naverAPI", produces = "application/text; charset=utf8")
 //    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/naverAPI", produces = "application/text; charset=utf8", method = RequestMethod.GET)
     @ResponseBody
-    public String naverAPI() throws URISyntaxException, IOException {
+    public String naverAPI(@RequestParam("entX") double entX, @RequestParam("entY") double entY) throws URISyntaxException, IOException {
+        log.info("naverAPI GET");
+        // 소수점 아래 7자리
+//        37.62160946286661, 127.010510709707; 집
+//        37.479055308109736, 127.03749469780335; 회사
 
-        String url = "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=127.1058342,37.359708&goal=129.075986,35.179470"; // encodeURIComponent로 인코딩 된 주소
+        // entX, entY 값 제대로 불러오는지 테스트
+        log.info("entX -> " + entX + ", entY -> " + entY);
+
+        // double type -> String
+        String StringEntX = Double.toString(entX);
+        String StringEntY = Double.toString(entY);
+
+        String url = "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=127.010510709707,37.62160946286661&goal="; // encodeURIComponent로 인코딩 된 주소
+        url += StringEntX + "," + StringEntY;
+
         String clientId = "eyjh3k2c64";
         String clientSecret = "lNUkTFWZxP9r8ZpBONTYaSf5bRsdsvZhrrou0oi0";
 
@@ -384,7 +248,20 @@ public class InterviewController {
             e.printStackTrace();
         }
 
-        return html.toString();
+
+        // Object 타입으로 parse
+        JsonParser jsonParser = new JsonParser();
+        Object objHtml = jsonParser.parse(html.toString());
+        log.info("objHtml -> " + objHtml);
+        log.info("html.toString -> " + html.toString());
+
+        // Obj -> Json
+        Gson gson = new Gson();
+        log.info("objHtml json -> " + gson.toJson(objHtml));
+
+//        return html.toString();
+        // html.toString() 과 toJson 의 차이점?
+        return gson.toJson(objHtml);
     }
 
 

@@ -144,115 +144,130 @@
 <!-- 네이버 주소 API -- Geocoding 주소를 가져와서 위도, 경도로 반환 -->
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=eyjh3k2c64&submodules=geocoder"></script>
 <script>
-    // interview.interview_address 에 있는 체크를 진행해야함.
-    var interviewAddress = "${interview.interview_address}";
-    // TODO: Address의 유효성 검사...
 
-    naver.maps.Service.geocode({
-        query: interviewAddress
-    }, function(status, response) {
-        if (status !== naver.maps.Service.Status.OK) {
-            return alert('Something wrong!');
-        }
-
-        var result = response.v2, // 검색 결과의 컨테이너
-            items = result.addresses; // 검색 결과의 배열
-
-        // do Something
-        // 지도 정보를 제대로 가지고 오지 못하면 response.v2.addresses[0] 이 "undefined" 이다.
-        if(typeof result.addresses[0] == "undefined"){
-            alert("지도를 불러오는데 실패했습니다. ");
-            return;
-        }
-
-        // log 체크
-        console.log(result.addresses[0].x);
-        console.log(result.addresses[0].y);
-        // x좌표와 y좌표를 등록
-
-        var entX = result.addresses[0].x;
-        var entY = result.addresses[0].y;
-
-        var mapOptions = {
-            center: new naver.maps.LatLng(entY,entX),
-            zoom: 16
-        };
-
-        var map = new naver.maps.Map('map', mapOptions);
-
-        // 지도에 마커 옵션 추가
-        var marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng(entY, entX),
-            map: map
-        });
-
-        // 마커 위에 추가 정보 출력 -- infowindow 관련 이벤트 설정, 마커를 클릭하면 popup
-        var contentString = [
-            '<div class="iw_inner">',
-            '   <br/><h3 align="center">${interview.interview_name}</h3><br/>',
-            '   <p align="center">${interview.interview_address}<br/></p><br/>',
-            '   <p align="center">${interview.interview_date}<br/></p><br/>',
-            '</div>'
-        ].join('');
-
-        var infowindow = new naver.maps.InfoWindow({
-            content: contentString
-        });
-
-        naver.maps.Event.addListener(marker, "click", function(e) {
-            if (infowindow.getMap()) {
-                infowindow.close();
-            } else {
-                infowindow.open(map, marker);
-            }
-        });
-
-        infowindow.open(map, marker);
-
-        // end naver.maps.Service.geocode
-    });
 
 
 </script>
 <script>
     // 네이버 API Ajax 테스트
     $(document).ready(function(){
-        // $.ajax(function(){
-        //
-        // });
 
-            // start={출발지}&goal={목적지}&option={탐색옵션}
+        // interview.interview_address 에 있는 체크를 진행해야함.
+        var interviewAddress = "${interview.interview_address}";
 
-        // 주소는 {경도,위도} , 출발지는 우리집주소에서 출발, 목적지는 목적지의 위도경도..
-
-        $.ajax({
-            url: "${pageContext.request.contextPath}/interviewPlace/naverAPI",
-            data:
-                {
-                },
-            dataType: "text",
-            type: "GET",
-            async: false,
-            success: function (data) {
-                console.log("API 통신 성공 ");
-                console.log(data);
-
-                // $.each(data, function (key, val) {
-                //
-                //     // 받아온 데이터 처리
-                //
-                // });
-            },
-            error: function(request, status, error){
-                // console.log(error);
-                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-
+        naver.maps.Service.geocode({
+            query: interviewAddress
+        }, function(status, response) {
+            if (status !== naver.maps.Service.Status.OK) {
+                return alert('Something wrong!');
             }
+
+            var result = response.v2, // 검색 결과의 컨테이너
+                items = result.addresses; // 검색 결과의 배열
+
+            // do Something
+            // 지도 정보를 제대로 가지고 오지 못하면 response.v2.addresses[0] 이 "undefined" 이다.
+            if(typeof result.addresses[0] == "undefined"){
+                alert("지도를 불러오는데 실패했습니다. ");
+                return;
+            }
+
+            // log 체크
+            console.log(result.addresses[0].x);
+            console.log(result.addresses[0].y);
+            // x좌표와 y좌표를 등록
+
+            var entX = result.addresses[0].x;
+            var entY = result.addresses[0].y;
+
+            var mapOptions = {
+                center: new naver.maps.LatLng(entY,entX),
+                zoom: 11
+            };
+
+            var map = new naver.maps.Map('map', mapOptions);
+
+            // 지도에 마커 옵션 추가
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(entY, entX),
+                map: map
+            });
+
+            // 선 표시
+            var polyline = new naver.maps.Polyline({
+                map: map,
+                path: [
+                    // 출발지
+                    new naver.maps.LatLng(37.6216094, 127.0105107)
+                ]
+            });
+
+            // console.log("polyline typeof -> " + typeof polyline + " polyline value : " + polyline);
+
+            // path 정보를 가져온다. 파라미터로 도착지 정보를 전달한다.
+            var pathResult = fncGetPathResult(entY,entX);
+            console.log("---------- pathResult --------");
+            console.log(pathResult);
+
+            // path 는 polyline의 path를 의미한다.
+            var path = polyline.getPath();
+
+            // pathResult에 담겨있는 결과들을 path에 push
+            $.each(pathResult, function (index, value) {
+                // value[1], value[0]///
+                path.push(new naver.maps.LatLng(value[1], value[0]));
+            });
+
+            // 도착지
+            path.push(new naver.maps.LatLng(entY, entX));
+
+            // end naver.maps.Service.geocode
         });
 
+        // 위도경도를 파라미터로 전달받아 네이버API를 사용해 path 정보를 받아오는 함수
+        function fncGetPathResult(entY,entX){
+            var pathResult;
+            var entX = entX;
+            var entY = entY;
+
+            $.ajax({
+                url: "${pageContext.request.contextPath}/interviewPlace/naverAPI",
+                data:
+                    {
+                        "entX": entX,
+                        "entY": entY
+                    },
+                dataType: "json",
+                type: "GET",
+                async: false,
+                success: function (data) {
+                    console.log("API Ajax Success");
+                    console.log(data);
+
+                    // 사이 경로들의 좌표가 array에 담겨있다.
+                    // path result
+                    pathResult = data.route.traoptimal[0].path;
+                    console.log("pathResult typeof -> " + typeof pathResult);
+                    console.log("pathResult size -> " + pathResult.length);
+                    // console.log(pathResult);
+
+                },
+                error: function(request, status, error){
+                    // console.log(error);
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+                }
+
+                // end ajax
+            });
+
+            return pathResult;
+            // end fncPathResult
+        }
 
 
 
+        // end document
     });
 
 
