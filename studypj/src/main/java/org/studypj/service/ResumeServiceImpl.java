@@ -95,13 +95,20 @@ public class ResumeServiceImpl implements ResumeService{
         return registerResult;
     }
 
+    @Transactional
     @Override
     public boolean remove(int resume_no) {
         log.info("resume remove...........service");
 
-        boolean registerResult = resumeMapper.delete(resume_no) == 1;
+        ResumeAttachVO resumeAttach = resumeAttachMapper.findByResumeNo(resume_no);
 
-        return registerResult;
+        if(resumeAttach != null){
+           log.info("resumeAttach result -> " + (resumeAttachMapper.deleteAll(resume_no) == 1));
+        }
+
+        boolean removeResult = resumeMapper.delete(resume_no) == 1;
+
+        return removeResult;
     }
 
 

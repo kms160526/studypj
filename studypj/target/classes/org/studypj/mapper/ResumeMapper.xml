@@ -17,7 +17,13 @@
 
 
     <select id="getListWithPaging" resultType="org.studypj.domain.ResumeVO">
-        select R.RESUME_NO, R.PERSONAL_STATEMENT_NO, R.EDUCATION_GROUP_NO, R.PERSONAL_NO, R.TRAINING_GROUP_NO, R.regdate
+        select
+               R.RESUME_NO
+             , R.PERSONAL_STATEMENT_NO
+             , R.EDUCATION_GROUP_NO
+             , R.PERSONAL_NO
+             , R.TRAINING_GROUP_NO
+             , R.regdate
         from (
                  select R.*, ROW_NUMBER() OVER (ORDER BY R.RESUME_NO DESC) rownum
                  from RESUME R
@@ -28,8 +34,18 @@
     </select>
 
     <insert id="insert">
-        insert into RESUME(PERSONAL_STATEMENT_NO, EDUCATION_GROUP_NO, PERSONAL_NO, TRAINING_GROUP_NO)
-        values (#{personal_statement_no}, #{education_group_no}, #{personal_no}, #{training_group_no})
+        insert into RESUME (
+                            PERSONAL_STATEMENT_NO
+                            , EDUCATION_GROUP_NO
+                            , PERSONAL_NO
+                            , TRAINING_GROUP_NO
+                            )
+        values (
+                #{personal_statement_no}
+                , #{education_group_no}
+                , #{personal_no}
+                , #{training_group_no}
+                )
     </insert>
 
     <delete id="delete">

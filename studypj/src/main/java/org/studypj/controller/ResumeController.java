@@ -23,6 +23,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -236,9 +239,9 @@ public class ResumeController {
 
     // POST - modify resume -> redirect 처리
     @PostMapping("/modifyResume")
-    public String modifyResume(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement,
-                               EducationVO education, TrainingVO training,
-                               @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr){
+    public String modifyResume(ResumeVO resume, PersonalVO personal, PersonalStatementVO personalStatement
+            , EducationVO education, TrainingVO training
+            , @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr){
 
         // 값 불러오는지 테스트
         log.info("POST -- /modifyResume");
@@ -269,6 +272,14 @@ public class ResumeController {
                                @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr){
 
         log.info("POST...... /removeResume ");
+
+        // bno로 가져와서 테이블 있으면 지우기, 여기서는 단지 첨부파일의 삭제만 진행한다.
+        // -> resumeService.remove에서 트랜잭션 처리를 통해서 한다.
+        ResumeAttachVO resumeAttach = resumeAttachService.get(resume_no);
+        if( resumeAttach != null){
+            deleteFile(resumeAttach);
+            log.info("resumeAttach 파일의 삭제 완료 ");
+        }
 
         rttr = resultCheckMethod(resumeService.remove(resume_no), rttr);
 
@@ -362,5 +373,33 @@ public class ResumeController {
 
         return rttr;
     }
+
+    private void deleteFile(ResumeAttachVO resumeAttach){
+
+        if(resumeAttach == null){
+            return;
+        }
+
+        log.info("delete attach files....................");
+        log.info(resumeAttach);
+        try {
+            Path file = Paths.get("/Users/kimminsu/upload/temp/" + resumeAttach.getUploadPath()
+                    + "/" + resumeAttach.getUuid() + "_" + resumeAttach.getFileName());
+
+            Files.deleteIfExists(file);
+
+            if (Files.probeContentType(file).startsWith("image")) {
+                Path thumbNail = Paths.get("/Users/kimminsu/upload/temp/" + resumeAttach.getUploadPath()
+                        + "/s_" + resumeAttach.getUuid() + "_" + resumeAttach.getFileName());
+
+                Files.delete(thumbNail);
+
+            }
+        } catch (Exception e) {
+            log.error("delete file error " + e.getMessage());
+        }// end catch
+
+
+    }   // end deleteFiles
 
 }

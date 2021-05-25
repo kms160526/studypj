@@ -3,8 +3,18 @@
 <mapper namespace="org.studypj.mapper.ResumeAttachMapper">
 
     <insert id="insert">
-        insert into attach (uuid, uploadpath, fileName, filetype, resume_no)
-        values (#{uuid}, #{uploadPath}, #{fileName}, #{fileType}, #{resume_no})
+        insert into attach (
+                            uuid
+                            , uploadpath
+                            , fileName
+                            , filetype
+                            , resume_no)
+        values (
+                #{uuid}
+                , #{uploadPath}
+                , #{fileName}
+                , #{fileType}
+                , #{resume_no})
     </insert>
 
     <delete id="delete">
@@ -16,7 +26,7 @@
     </select>
 
     <delete id="deleteAll">
-        delete attach where resume_no = #{resume_no}
+        delete from attach where resume_no = #{resume_no}
     </delete>
 
 </mapper>

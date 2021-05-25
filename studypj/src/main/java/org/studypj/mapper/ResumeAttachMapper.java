@@ -11,6 +11,6 @@ public interface ResumeAttachMapper {
 
     public ResumeAttachVO findByResumeNo(int resume_no);
 
-    public void deleteAll(int resume_no);
+    public int deleteAll(int resume_no);
 
 }

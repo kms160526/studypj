@@ -15,8 +15,18 @@
 <!--    select * from TRAINING;-->
 
     <insert id="insert">
-        insert into TRAINING (TRAINING_NO, TRAINING_TERM, TRAINING_NAME, TRAINING_COMPLETION)
-        values (#{training_no}, #{training_term}, #{training_name}, #{training_completion})
+        insert into TRAINING
+            (
+             TRAINING_NO
+             , TRAINING_TERM
+             , TRAINING_NAME
+             , TRAINING_COMPLETION)
+        values (
+                #{training_no}
+                , #{training_term}
+                , #{training_name}
+                , #{training_completion}
+                )
     </insert>
 
     <delete id="delete">

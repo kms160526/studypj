@@ -3,8 +3,27 @@
 <mapper namespace="org.studypj.mapper.PersonalMapper">
 
     <insert id="insert">
-        insert into PERSONAL (name_ko, NAME_EN, NAME_CN, BIRTH, ADDRESS, CONTACT, PHONE, EMAIL)
-        values (#{name_ko}, #{name_en}, #{name_cn}, #{birth}, #{address}, #{contact}, #{phone}, #{email})
+        insert into PERSONAL
+            (
+             name_ko
+             , NAME_EN
+             , NAME_CN
+             , BIRTH
+             , ADDRESS
+             , CONTACT
+             , PHONE
+             , EMAIL
+             )
+        values
+               (
+                #{name_ko}
+                , #{name_en}
+                , #{name_cn}
+                , #{birth}
+                , #{address}
+                , #{contact}
+                , #{phone}
+                , #{email})
     </insert>
 
     <delete id="delete">

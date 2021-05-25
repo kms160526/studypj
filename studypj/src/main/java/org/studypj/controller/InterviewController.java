@@ -36,6 +36,8 @@ public class InterviewController {
     private InterviewService interviewService;
 
     // 날짜 데이터 포맷을 위한 @InitBinder yyyy-MM-dd
+
+
     @InitBinder
     public void initBinder(WebDataBinder binder){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -45,6 +47,13 @@ public class InterviewController {
     // --------- interview ---------
     // GET - /interviewList
     // 리스트 출력 페이지
+
+    /**
+     *
+     * @param model
+     * @param cri
+     * @return
+     */
     @GetMapping("/interviewList")
     public String interviewList(Model model, Criteria cri){
 
@@ -162,6 +171,12 @@ public class InterviewController {
     }
 
 
+    /**
+     *
+     * @param model
+     * @param cri
+     * @return
+     */
     // --------- interview 길찾기 /interviewDirection --------
     @GetMapping("/interviewDirectionList")
     public String interviewDirectionList(Model model, Criteria cri){

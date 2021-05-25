@@ -15,7 +15,11 @@
     <!--    &#45;&#45; 123, 14/03 ~ 20/02, testschool, 졸업여부 - 1 (졸업), 2(재학),-->
 
     <insert id="insert">
-        insert into EDUCATION (EDUCATION_NO, EDUCATION_TERM, SCHOOL_NAME, GRATED)
+        insert into EDUCATION (
+                               EDUCATION_NO
+                               , EDUCATION_TERM
+                               , SCHOOL_NAME
+                               , GRATED)
         values (#{education_no}, #{education_term}, #{school_name}, #{grated})
     </insert>
 
