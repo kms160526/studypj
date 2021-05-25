@@ -10,6 +10,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@include file="../includes/header.jsp" %>
+<style type="text/css">
+    .radio-wrap{
+        display: flex;
+        padding: 10px;
+    }
+
+    .radio-wrap label{
+        display: flex;
+    }
+
+    .radio-wrap label span{
+        width: 150px;
+    }
+</style>
 
 <!-- 본문 -->
 <div id="content">
@@ -123,9 +137,13 @@
                 </div>
                 <div class="form-row">
                     <div>
-                        졸업여부 -> 1 졸업, 2 수료, 3 재학
+                        졸업여부
                     </div>
-                    <input type="text" name='grated' value='${education.grated}'>
+                    <div class="radio-wrap">
+                        <label><input type="radio" name='grated' value="1" checked="checked"><span>졸업</span></label>
+                        <label><input type="radio" name='grated' value="2" ><span>수료</span></label>
+                        <label><input type="radio" name='grated' value="3" ><span>재학</span></label>
+                    </div>
                 </div>
 
 
@@ -141,7 +159,7 @@
                     <div>
                         교육연수_번호
                     </div>
-                    <input type="text" name='home_environment' value='${training.training_no}'>
+                    <input type="text" name='training_no' value='${training.training_no}'>
                 </div>
                 <div class="form-row">
                     <div>
@@ -157,9 +175,12 @@
                 </div>
                 <div class="form-row">
                     <div>
-                        수료여부 -> radio 형태로
+                        수료여부
                     </div>
-                    <input type="text" name='training_completion' value='${training.training_completion}'>
+                    <div class="radio-wrap">
+                        <label><input type="radio" name='training_completion' value="1" checked="checked"><span>수료</span></label>
+                        <label><input type="radio" name='training_completion' value="2" ><span>미수료</span></label>
+                    </div>
                 </div>
 
             </form>
@@ -168,41 +189,49 @@
 
         <!-- 자기소개서 form-wrap -->
         <div class="form-wrap">
-            <form name="personalStatement-form">
+            <form name="persnalStatement-form">
                 <div class="form-row">
                     <div>
-                        자기소개서
+                        자기소개서 선택
                     </div>
+                    <!-- forEach를 사용해서 자소서 목록들을 options에 추가한다. -> 성능상의 이유로 잘 사용하지 않음-->
+                    <select id="personalStatement-list" name="personalStatement-list" onchange="changeSelect()">
+                        <option value="none">=== 선택 ===</option>
+                        <c:forEach items="${personalStatementList}" var="personalStatement" varStatus="s">
+                            <option value="${personalStatement.personal_statement_no}">${personalStatement.personal_statement_no}</option>
+                        </c:forEach>
+                    </select>
                 </div>
                 <div class="form-row">
                     <div>
-                        자기소개서 불러오기
+                        자기소개서_번호
                     </div>
-                    <button class="btn-select-personalStatement" style='margin:10px'>불러오기</button>
+                    <input type="text" name='personal_statement_no'
+                           value="" readonly="readonly">
                 </div>
                 <div class="form-row">
                     <div>
                         가정환경
                     </div>
-                    <textarea rows="5" cols="50" name='home_environment'></textarea>
+                    <textarea rows="5" cols="50" name='home_environment' readonly="readonly"></textarea>
                 </div>
                 <div class="form-row">
                     <div>
                         본인장단점
                     </div>
-                    <textarea rows="5" cols="50" name='pros_and_cons'></textarea>
+                    <textarea rows="5" cols="50" name='pros_and_cons' readonly="readonly"></textarea>
                 </div>
                 <div class="form-row">
                     <div>
                         본인경험
                     </div>
-                    <textarea rows="5" cols="50" name='experiance' ></textarea>
+                    <textarea rows="5" cols="50" name='experiance' readonly="readonly"></textarea>
                 </div>
                 <div class="form-row">
                     <div>
                         입사포부
                     </div>
-                    <textarea rows="5" cols="50" name='job_espirations'></textarea>
+                    <textarea rows="5" cols="50" name='job_espirations' readonly="readonly"></textarea>
                 </div>
 
             </form>
@@ -225,6 +254,7 @@
 </div>
 
 <%@include file="../includes/footer.jsp" %>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
     $(document).ready(function(){
 
@@ -259,8 +289,59 @@
             // end $("button").on("click", function(e){
         });
 
+
         // end $(document).ready(function(){
     });
+
+
+
+        // select 가 클릭되면 해당하는 resume의 값을 가져온다.
+    function changeSelect(){
+
+        var selectNo = document.getElementById("personalStatement-list");
+        // select element에서 선택된 option의 value가 저장된다.
+        var selectValue = selectNo.options[selectNo.selectedIndex].value;
+
+        // // select element에서 선택된 option의 text가 저장된다.
+        // var selectText = selectNo.options[langSelect.selectedIndex].text;
+
+        console.log("value -> " + selectValue);
+
+        // Ajax로 값을 Json 형식으로 요청하고 그 값을 자소서 란에 작성한다.
+        $.ajax({
+            url: '${pageContext.request.contextPath}/resume/getPersonalStatementAjax',
+            data: {
+                "personal_statement_no": selectValue
+            },
+            dataType: 'json',
+            type: 'GET',
+            success: function(data){
+                console.log("getPersonalStatementAjax Ajax Success");
+                // console.log(data);
+                // console.log(data.personal_statement_no);
+                // console.log(data.home_environment);
+                // console.log(data.pros_and_cons);
+                // console.log(data.experiance);
+                // console.log(data.job_espirations);
+
+                $("input[name='personal_statement_no']").val(data.personal_statement_no);
+                $("textarea[name='home_environment']").val(data.home_environment);
+                $("textarea[name='pros_and_cons']").val(data.pros_and_cons);
+                $("textarea[name='experiance']").val(data.experiance);
+                $("textarea[name='job_espirations']").val(data.job_espirations);
+
+            },
+            error: function(request, status, error){
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+
+            // end Ajax
+        });
+
+        // end function changeSelect
+    }
+
+
 
     function fnRegisterResume(obj){
         // action-form을 파라미터로 전달받아 업데이트에 필요한 내용들을 전부 담아 전달
@@ -294,7 +375,9 @@
         obj.append($("input[name='education_no']").clone().attr("type", "hidden"));
         obj.append($("input[name='education_term']").clone().attr("type", "hidden"));
         obj.append($("input[name='school_name']").clone().attr("type", "hidden"));
-        obj.append($("input[name='grated']").clone().attr("type", "hidden"));
+        var grated = $("input[name='grated']:checked").val();
+        obj.append("<input type='hidden' name='grated' value='" + grated + "'>");
+        // obj.append($("input[name='grated']").clone().attr("type", "hidden"));
 
 
         // 교육정보 -> 교육정보_no는 바뀌지 않는다.
@@ -302,7 +385,9 @@
         obj.append($("input[name='training_no']").clone().attr("type", "hidden"));
         obj.append($("input[name='training_term']").clone().attr("type", "hidden"));
         obj.append($("input[name='training_name']").clone().attr("type", "hidden"));
-        obj.append($("input[name='training_completion']").clone().attr("type", "hidden"));
+        // obj.append($("input[name='training_completion']").clone().attr("type", "hidden"));
+        var training_completion = $("input[name='training_completion']:checked").val();
+        obj.append("<input type='hidden' name='training_completion' value='" + training_completion + "'>");
 
         // 자기소개서 번호 -> 자기소개서는 따로 update가 되지않고 resume에 자기소개서 번호만 추가되는식으로 update 된다.
         // var personal_statement_noTag = $("input[name='personal_statement_no']").clone();
@@ -321,6 +406,7 @@
 
     // select box 클릭시 해당하는 번호의 자소서를 불러와서 뿌려주는 기능
 
+    // TODO: 각종 유효성 체크
     // 한글체크함수
     // 날짜체크함수
     // 전화번호체크함수
@@ -329,11 +415,11 @@
 
 
     // 이력서 사진관련처리
+    // 이미지 확장자만 처리
     var regex = new RegExp("(.*?)\.(jpg|gif|png|bmp|svg|jpeg|jfif)$");
     var maxSize = 5242880; // 5MB
 
     function checkExtension(fileName, fileSize){
-
         if(fileSize >= maxSize){
             alert("파일 사이즈 초과");
             return false;
@@ -351,9 +437,7 @@
     $("input[type='file']").change(function(e){
 
         var formData = new FormData();
-
         var inputFile = $("input[name='uploadPic']");
-
         var files = inputFile[0].files;
 
         console.log(files);
@@ -397,6 +481,7 @@
     });
 
 
+    // 사진 등록
     function fnRegisterPic() {
 
 

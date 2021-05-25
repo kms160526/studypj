@@ -1,8 +1,15 @@
 package org.studypj.controller;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +19,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.studypj.domain.*;
 import org.studypj.service.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -26,6 +39,7 @@ public class ResumeController {
     private PersonalService personalService;
     private EducationService educationService;
     private TrainingService trainingService;
+    private ResumeAttachService resumeAttachService;
 
     // 날짜 데이터 포맷을 위한 @InitBinder yyyy-MM-dd
     @InitBinder
@@ -121,6 +135,22 @@ public class ResumeController {
         return "redirect:/resume/personalStatementList";
     }
 
+    // GET - Ajax - /resume/getPersonalStatementAjax
+    @RequestMapping(value = "/getPersonalStatementAjax", produces = "application/text; charset=utf8", method = RequestMethod.GET)
+    @ResponseBody
+    public String getPersonalStatementAjax(@RequestParam("personal_statement_no") int personal_statement_no) throws ParseException {
+        log.info("getPersonalStatementAjax GET - personal_statement_no -> " + personal_statement_no);
+
+        PersonalStatementVO personalStatement = personalStatementService.get(personal_statement_no);
+
+        // Obj -> Json
+        Gson gson = new Gson();
+        log.info("personalStatementObj json -> " + gson.toJson(personalStatement));
+
+        return gson.toJson(personalStatement);
+    }
+
+
 
     // --------- resume ---------
     // GET - /resume/resumeList
@@ -166,6 +196,14 @@ public class ResumeController {
         log.info("/getResume -> resume : " + resume);
         model.addAttribute("resume", resume);
 
+        // 사진 관련 정보 얻어오기
+        ResumeAttachVO resumeAttach = resumeAttachService.get(resume.getResume_no());
+        if(resumeAttach != null){
+            log.info("resume attach exitst");
+            model.addAttribute("resumeAttach", resumeAttach);
+        }
+
+
         // 개인신상 정보 얻어오기
         // resume 의 personal_no 를 참고하여 personal의 값들을 가져온다.
         // 값이 없는 경우에 대해서는 register 할때 처리해준다.
@@ -175,19 +213,17 @@ public class ResumeController {
         model.addAttribute("personal", personal);
 
         // 교육 정보 얻어오기 -> 최종 대학정보만 가져온다. -> 편입과정이 있을 수 있고... 대학원 과정이 있을 수 있다.
-        // List<EducationVO> 타입일 것이다... -> 후에 수정
         // resume 의 personal_no 를 참고하여 education 값들을 가져온다.
         EducationVO education = educationService.get(resume.getEducation_group_no());
         log.info("/getResume -> education : " + education);
         model.addAttribute("education", education);
 
         // 교육연수 정보 얻어오기 -> 여러개이겠지만 일단은 한개로 작성..
-        // -> List<Training> 타입으로 받아올 것 같다.
         TrainingVO training = trainingService.get(resume.getTraining_group_no());
         log.info("/getResume -> training : " + training);
         model.addAttribute("training", training);
 
-        // 자기소개서 얻어오기 -> 추후 수정할땐 등록된 자기소개서중에 고르는 형식으로 수정하기
+        // TODO: 자기소개서 얻어오기 -> 추후 수정할땐 등록된 자기소개서중에 고르는 형식으로 수정하기
         // 자기소개서는 1개만 작성
         PersonalStatementVO personalStatement = personalStatementService.get(resume.getPersonal_statement_no());
         log.info("/getResume -> personalStatement : " + personalStatement);
@@ -236,6 +272,8 @@ public class ResumeController {
 
         rttr = resultCheckMethod(resumeService.remove(resume_no), rttr);
 
+        //TODO: 파일 삭제 관련 작업 추가
+
         return "redirect:/resume/resumeList" + cri.getListLink();
     }
 
@@ -244,8 +282,6 @@ public class ResumeController {
     public void registerResume(Model model){
 
         log.info("GET....... /registerResume");
-
-        // 사진 관련 정보를 ATTACH 테이블에 저장한다.
 
         // 기본적으로 register는 기존의 가장 최신 정보를 가져와서 작성하고 새로운 _no 로 insert 한다.
         // 만약 최근의 데이터가 없다면 ? -> update가 아니라 insert 하는 작업을 실행해야 한다.
@@ -280,6 +316,10 @@ public class ResumeController {
             model.addAttribute("training", training);
         }
 
+        // 자소서 목록들을 불러온다.
+        List<PersonalStatementVO> personalStatementList = personalStatementService.getListNonParam();
+        model.addAttribute("personalStatementList", personalStatementList);
+
     }
 
     // POST - register resume
@@ -288,6 +328,9 @@ public class ResumeController {
                                  EducationVO education, TrainingVO training, ResumeAttachVO resumeAttach, RedirectAttributes rttr){
 
         log.info("POST... /registerResume.." + resume );
+
+        log.info("grated 가져오는지 체크 -> " + education.getGrated());
+        log.info("training -> " + training);
 
         // 사진 관련 처리
         // resumeAttach 잘 가져오나 테스트

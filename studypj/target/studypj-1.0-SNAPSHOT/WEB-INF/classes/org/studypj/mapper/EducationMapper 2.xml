@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.studypj.mapper.EducationMapper">
+
+    <!--    private int education_group_no;-->
+    <!--    private int education_no;-->
+    <!--    private String education_term;-->
+    <!--    private String school_name;-->
+    <!--    private int grated;-->
+
+    <!--    private Date regdate;-->
+
+    <!--    insert into EDUCATION(EDUCATION_NO, EDUCATION_TERM, SCHOOL_NAME, GRATED)-->
+    <!--    values ( 123, '14032002', 'testschool', 1);-->
+    <!--    &#45;&#45; 123, 14/03 ~ 20/02, testschool, 졸업여부 - 1 (졸업), 2(재학),-->
+
+    <insert id="insert">
+        insert into EDUCATION (EDUCATION_NO, EDUCATION_TERM, SCHOOL_NAME, GRATED)
+        values (#{education_no}, #{education_term}, #{school_name}, #{grated})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from EDUCATION
+        where education_group_no = #{education_group_no}
+    </delete>
+
+    <update id="update">
+        update EDUCATION
+        set EDUCATION_NO   = #{education_no},
+            EDUCATION_TERM = #{education_term},
+            SCHOOL_NAME    = #{school_name},
+            GRATED         = #{grated}
+        where education_group_no = #{education_group_no}
+    </update>
+
+    <select id="read" resultType="org.studypj.domain.EducationVO">
+        select *
+        from EDUCATION
+        where education_group_no = #{education_group_no}
+    </select>
+
+    <!-- 가장 최근의 정보를 읽어옴 -->
+    <select id="recentRead" resultType="org.studypj.domain.EducationVO">
+        select e.*
+        from EDUCATION e
+                 join (
+            select MAX(mx.education_group_no) AS max_education_group_no
+            from EDUCATION mx
+        ) m on m.max_education_group_no = e.education_group_no;
+    </select>
+
+</mapper>
+

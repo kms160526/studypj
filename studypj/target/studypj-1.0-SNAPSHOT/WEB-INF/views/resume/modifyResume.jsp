@@ -10,6 +10,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@include file="../includes/header.jsp" %>
+<style type="text/css">
+    .radio-wrap{
+        display: flex;
+        padding: 10px;
+    }
+
+    .radio-wrap label{
+        display: flex;
+    }
+
+    .radio-wrap label span{
+        width: 150px;
+    }
+</style>
 
 <!-- 본문 -->
 <div id="content">
@@ -133,7 +147,11 @@
                     <div>
                         졸업여부 -> 1 졸업, 2 수료, 3 재학
                     </div>
-                    <input type="text" name='grated' value='${education.grated}'>
+                    <div class="radio-wrap">
+                        <label><input type="radio" name='grated' value="1" checked="checked"><span>졸업</span></label>
+                        <label><input type="radio" name='grated' value="2" ><span>수료</span></label>
+                        <label><input type="radio" name='grated' value="3" ><span>재학</span></label>
+                    </div>
                 </div>
                 <div class="form-row">
                     <div>
@@ -162,7 +180,7 @@
                     <div>
                         교육연수_번호
                     </div>
-                    <input type="text" name='home_environment' value='${training.training_no}'>
+                    <input type="text" name='training_no' value='${training.training_no}'>
                 </div>
                 <div class="form-row">
                     <div>
@@ -178,9 +196,12 @@
                 </div>
                 <div class="form-row">
                     <div>
-                        수료여부 -> radio 형태로
+                        수료여부
                     </div>
-                    <input type="text" name='training_completion' value='${training.training_completion}'>
+                    <div class="radio-wrap">
+                        <label><input type="radio" name='training_completion' value="1" checked="checked"><span>수료</span></label>
+                        <label><input type="radio" name='training_completion' value="2" ><span>미수료</span></label>
+                    </div>
                 </div>
                 <div class="form-row">
                     <div>
@@ -271,10 +292,6 @@
 
 </div>
 
-<button id="test-btn" name="test-btn">test</button>
-
-
-
 <%@include file="../includes/footer.jsp" %>
 <script>
     $(document).ready(function(){
@@ -362,7 +379,8 @@
         obj.append($("input[name='education_no']").clone().attr("type", "hidden"));
         obj.append($("input[name='education_term']").clone().attr("type", "hidden"));
         obj.append($("input[name='school_name']").clone().attr("type", "hidden"));
-        obj.append($("input[name='grated']").clone().attr("type", "hidden"));
+        var grated = $("input[name='grated']:checked").val();
+        obj.append("<input type='hidden' name='grated' value='" + grated + "'>");
 
 
         // 교육정보 -> 교육정보_no는 바뀌지 않는다.
@@ -370,7 +388,8 @@
         obj.append($("input[name='training_no']").clone().attr("type", "hidden"));
         obj.append($("input[name='training_term']").clone().attr("type", "hidden"));
         obj.append($("input[name='training_name']").clone().attr("type", "hidden"));
-        obj.append($("input[name='training_completion']").clone().attr("type", "hidden"));
+        var training_completion = $("input[name='training_completion']:checked").val();
+        obj.append("<input type='hidden' name='training_completion' value='" + training_completion + "'>");
 
         // 자기소개서 번호 -> 자기소개서는 따로 update가 되지않고 resume에 자기소개서 번호만 추가되는식으로 update 된다.
         // var personal_statement_noTag = $("input[name='personal_statement_no']").clone();

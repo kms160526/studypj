@@ -199,8 +199,6 @@ public class InterviewController {
 
 
     // 이동경로 좌표 반환 - 네이버 길찾기 API
-//    @GetMapping("/naverAPI", produces = "application/text; charset=utf8")
-//    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/naverAPI", produces = "application/text; charset=utf8", method = RequestMethod.GET)
     @ResponseBody
     public String naverAPI(@RequestParam("entX") double entX, @RequestParam("entY") double entY) throws URISyntaxException, IOException {
